@@ -1,0 +1,33 @@
+.burgeringredients__tab_selector {
+    display: flex;
+    flex-direction: row;
+}
+
+.burgeringredients__scroll_container {
+    max-width: 600px;
+    overflow-y: scroll;
+    width: 100%;
+    height: 716px;
+    margin-bottom: 92px;
+}
+
+.burgeringredients__scroll_container::-webkit-scrollbar {
+    width: calc(var(--offset-base-size) * 2);
+}
+
+.burgeringredients__scroll_container::-webkit-scrollbar-track {
+    box-shadow: 8px 8px 8px -8px rgba(221, 114, 248, 0.2) inset;
+    border-radius: 10px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.burgeringredients__scroll_container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(133, 133, 173, 1);
+}
+
+.burgeringredients__scroll_container::-webkit-scrollbar-thumb:hover {
+    /*попытка сделать интерфейс понятнее на отклике*/
+    background-color: #fff;
+    border: 1px solid rgb(85, 85, 85);
+}

@@ -1,0 +1,7 @@
+.burger_ingredients_list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: auto auto;
+    padding-right: 10px;
+}
