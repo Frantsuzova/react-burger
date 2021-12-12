@@ -5,4 +5,4 @@
 на данный момент реалиализовано все, что требуется для итоговой сдачи, включая проверку типов данных.
 отсутствует реализация красивого скролла для мозилы.
 
-почему-то не работает [gh-pages](https://frantsuzova.github.io/react-burger/), попытка их запустить сделана по мотивам [статьи](https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f)
+[gh-pages](https://frantsuzova.github.io/react-burger/)
