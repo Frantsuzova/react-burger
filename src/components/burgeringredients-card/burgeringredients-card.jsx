@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import burgerIngredientsCardStyles from './burgeringredients_card.module.css';
+import { BurgerIngredientsCategoryType } from '../../utils/types.js';
+import burgerIngredientsCardStyles from './burgeringredients-card.module.css';
 // компоненты от яндекса
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -24,10 +25,12 @@ export default function BurgerIngredientsCard(props) {
 }
 
 // проверка типов
+BurgerIngredientsCard.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+/*
 BurgerIngredientsCard.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     price: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired
 };
-
+*/

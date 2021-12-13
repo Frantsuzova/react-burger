@@ -6,7 +6,7 @@ import appStyles from './app.module.css';
 import { myData } from '../../utils/data.js';
 // компоненты
 import AppHeader from '../appheader/appheader';
-import BurgerConstructor from '../burger_constructor/burger_constructor.jsx';
+import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import BurgerIngredients from '../burgeringredients/burgeringredients.jsx';
 
 // массивы ингредиентов (для конструктора)

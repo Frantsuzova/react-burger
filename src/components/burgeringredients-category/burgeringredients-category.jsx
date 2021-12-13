@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import burgerIngredientsCategoryStyles from './burgeringredients_category.module.css';
+import { BurgerIngredientsCategoryType } from '../../utils/types.js';
+import burgerIngredientsCategoryStyles from './burgeringredients-category.module.css';
 // компонент
-import BurgerIngredientsCard from '../burgeringredients_card/burgeringredients_card.jsx';
+import BurgerIngredientsCard from '../burgeringredients-card/burgeringredients-card.jsx';
 
 export default function BurgerIngredientsCategory(props) {
     return (
@@ -18,6 +19,8 @@ export default function BurgerIngredientsCategory(props) {
 }
 
 // проверка типов
+BurgerIngredientsCategory.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+/*
 BurgerIngredientsCategory.propTypes = {
     items: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
@@ -27,3 +30,4 @@ BurgerIngredientsCategory.propTypes = {
         _id: PropTypes.string.isRequired
     }).isRequired).isRequired
 };
+*/

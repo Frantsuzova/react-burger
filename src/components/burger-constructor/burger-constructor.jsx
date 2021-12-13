@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import burgerConstructorStyles from './burger_constructor.module.css';
+import { BurgerIngredientsCategoryType } from '../../utils/types.js';
+import burgerConstructorStyles from './burger-constructor.module.css';
 //компоненнты от яндекса
 import {
     ConstructorElement,
@@ -70,6 +71,9 @@ export default function BurgerConstructor(props) {
 }
 
 // проверка типов
+BurgerConstructor.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+
+/*
 BurgerConstructor.propTypes = {
     topItem: PropTypes.shape({
         name: PropTypes.string.isRequired,
@@ -90,4 +94,4 @@ BurgerConstructor.propTypes = {
         image: PropTypes.string.isRequired
     })
 };
-
+*/
