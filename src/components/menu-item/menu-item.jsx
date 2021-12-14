@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import menuItemStyles from './menu_item.module.css';
+import menuItemStyles from './menu-item.module.css';
 
 export default function MenuItem(props) {
     return (

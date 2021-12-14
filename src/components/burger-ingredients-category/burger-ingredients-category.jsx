@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { BurgerIngredientsCategoryType } from '../../utils/types.js';
-import burgerIngredientsCategoryStyles from './burgeringredients-category.module.css';
+import burgerIngredientsCategoryStyles from './burger-ingredients-category.module.css';
 // компонент
-import BurgerIngredientsCard from '../burgeringredients-card/burgeringredients-card.jsx';
+import BurgerIngredientsCard from '../burger-ingredients-card/burger-ingredients-card.jsx';
 
 export default function BurgerIngredientsCategory(props) {
     return (

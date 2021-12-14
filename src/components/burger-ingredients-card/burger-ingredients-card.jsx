@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { BurgerIngredientsCategoryType } from '../../utils/types.js';
-import burgerIngredientsCardStyles from './burgeringredients-card.module.css';
+import burgerIngredientsCardStyles from './burger-ingredients-card.module.css';
 // компоненты от яндекса
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 

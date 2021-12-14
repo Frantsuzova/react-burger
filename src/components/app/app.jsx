@@ -5,9 +5,9 @@ import appStyles from './app.module.css';
 // которыми можно воспользоваться на уровне компонента App:
 import { myData } from '../../utils/data.js';
 // компоненты
-import AppHeader from '../appheader/appheader';
+import AppHeader from '../app-header/app-header.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
-import BurgerIngredients from '../burgeringredients/burgeringredients.jsx';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 
 // массивы ингредиентов (для конструктора)
 // снизу и сверху фиксированные слои булок + посередине все-все остальное

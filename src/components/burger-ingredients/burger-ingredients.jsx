@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import burgerIngredientsStyles from './burgeringredients.module.css';
+import burgerIngredientsStyles from './burger-ingredients.module.css';
 // компонент
-import BurgerIngredientsCategory from '../burgeringredients-category/burgeringredients-category.jsx';
+import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ingredients-category.jsx';
 // компонент от яндекса
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
