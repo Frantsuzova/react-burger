@@ -57,13 +57,11 @@ function IngredientDetails({ name, image, calories, fat, proteins, carbohydrates
 
 export default IngredientDetails;
 
-const IngredientDetailsTypes = PropTypes.shape({
+IngredientDetails.propTypes = {
     image: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     calories: PropTypes.number.isRequired,
     fat: PropTypes.number.isRequired,
     proteins: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-});
-
-IngredientDetails.propTypes = PropTypes.arrayOf(IngredientDetailsTypes).isRequired;
+    carbohydrates: PropTypes.number.isRequired
+};

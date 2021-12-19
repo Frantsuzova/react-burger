@@ -12,6 +12,9 @@ const Modal = ({ closeModal, children }) => {
             if (evt.key === "Escape") closeModal();
         };
         document.addEventListener("keydown", handleEscPress);
+        return () => {
+            document.removeEventListener("keydown", handleEscPress);
+        };
     }, [closeModal]);
 
     const overlayClick = (evt) => {
