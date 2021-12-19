@@ -12,12 +12,17 @@ const Modal = ({ closeModal, children }) => {
             if (evt.key === "Escape") closeModal();
         };
         document.addEventListener("keydown", handleEscPress);
-        return () => document.removeEventListener("keydown", handleEscPress);
     }, [closeModal]);
+
+    const overlayClick = (evt) => {
+        if (evt.target === evt.currentTarget) {
+            closeModal();
+        }
+    }
 
     return createPortal(
         <>
-            <ModalOverlay onClick={closeModal}>
+            <ModalOverlay onClick={overlayClick}>
                 <div className={styles.modal__space}>
                     <div className={styles.modal__close_icon}>
                         <CloseIcon type="primary" onClick={closeModal} />

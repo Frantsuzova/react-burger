@@ -20,4 +20,11 @@ const BurgerIngredientsCategory = React.forwardRef(({ heading, items, openModal 
 })
 export default BurgerIngredientsCategory;
 // проверка типов
-BurgerIngredientsCategory.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+//BurgerIngredientsCategory.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+const BurgerIngredientsCategoryTypes = PropTypes.shape({
+    heading: PropTypes.string.isRequired,
+    items: BurgerIngredientsCategoryType,
+    openModal: PropTypes.func.isRequired
+});
+
+BurgerIngredientsCategory.propTypes = BurgerIngredientsCategoryTypes.isRequired;

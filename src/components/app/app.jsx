@@ -32,13 +32,13 @@ export default function App() {
                     setState(state => ({
                         ...state, isLoading: true, data: res.data
                     }));
-                },
-                (error) => {
-                    setState(state => ({
-                        ...state, isLoading: true, hasError: true, error: error
-                    }))
-                }
-            )
+                })
+            .catch((error) => {
+                setState(state => ({
+                    ...state, isLoading: false, hasError: true, error: error
+                }))
+            });
+
     }, []);
 
     /* данные получены */

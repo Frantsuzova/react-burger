@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { BurgerIngredientsCategoryType } from '../../utils/types.js';
+//import { BurgerIngredientsCategoryType } from '../../utils/types.js';
 import burgerConstructorStyles from './burger-constructor.module.css';
 //компоненнты от яндекса
 import {
@@ -91,4 +91,10 @@ export default function BurgerConstructor({ openModal, items }) {
 }
 
 // проверка типов
-BurgerConstructor.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+//BurgerConstructor.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+BurgerConstructor.propTypes = {
+    openModal: PropTypes.func.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        type: PropTypes.string.isRequired
+    }).isRequired).isRequired
+};
