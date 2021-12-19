@@ -1,0 +1,24 @@
+.ingredient__container {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredient__img {
+    width: 480px;
+    height: 240px;
+    box-sizing: border-box;
+}
+
+.ingredient__info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingredient__element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

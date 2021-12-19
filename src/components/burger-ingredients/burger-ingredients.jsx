@@ -6,7 +6,8 @@ import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ing
 // компонент от яндекса
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export default function BurgerIngredients(props) {
+//export default function BurgerIngredients(props) {
+export default function BurgerIngredients({ openModal, items }) {
     const [current, setCurrent] = React.useState('bun')
     return (
         <>
@@ -21,9 +22,9 @@ export default function BurgerIngredients(props) {
             </div>
             {/*список ингридиентов простыней*/}
             <div className={burgerIngredientsStyles.burgeringredients__scroll_container}>
-                <BurgerIngredientsCategory heading="Булки" items={props.items.filter(item => item.type === 'bun')} />
-                <BurgerIngredientsCategory heading="Соусы" items={props.items.filter(item => item.type === 'sauce')} />
-                <BurgerIngredientsCategory heading="Начинки" items={props.items.filter(item => item.type === 'main')} />
+                <BurgerIngredientsCategory heading="Булки" openModal={openModal} items={items.filter(item => item.type === 'bun')} />
+                <BurgerIngredientsCategory heading="Соусы" openModal={openModal} items={items.filter(item => item.type === 'sauce')} />
+                <BurgerIngredientsCategory heading="Начинки" openModal={openModal} items={items.filter(item => item.type === 'main')} />
             </div>
         </>
     );

@@ -9,4 +9,6 @@ const BurgerIngredientsCategoryType = PropTypes.shape({
     _id: PropTypes.string.isRequired
 })
 
+
+
 export { BurgerIngredientsCategoryType };

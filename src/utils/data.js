@@ -1,3 +1,4 @@
+const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 const myData = [
     {
         "_id": "60666c42cc7b410027a1a9b1",
@@ -211,4 +212,4 @@ const myData = [
     }
 ]
 
-export { myData };
+export { dataUrl, myData };
