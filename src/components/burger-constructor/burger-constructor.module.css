@@ -1,0 +1,70 @@
+.burger_constructor__main_list {
+    margin: 0;
+    padding: 100px 0 0 0;
+    padding-top: 100px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.burger_constructor__main_list_item {
+    padding-left: 40px;
+    position: relative;
+}
+
+.burger_constructor__main_list_item:last-child {
+    padding-top: 270px;
+}
+
+.burger_constructor__draggable_list {
+    overflow-y: scroll;
+    max-height: 280px;
+    list-style: none;
+    padding: 0;
+    /*из расчета 3 опции + отступы*/
+    position: absolute;
+    /*чтобы скролл не съедал место*/
+    top: 0;
+    left: 2px;
+    z-index: 1;
+}
+
+.burger_constructor__draggable_list_item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    padding-bottom: 16px;
+    padding-right: 8px;
+}
+
+.burger_constructor__draggable_list::-webkit-scrollbar {
+    width: calc(var(--offset-base-size) * 2);
+}
+
+.burger_constructor__draggable_list::-webkit-scrollbar-track {
+    box-shadow: 8px 8px 8px -8px rgba(221, 114, 248, 0.2) inset;
+    border-radius: 10px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.burger_constructor__draggable_list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(133, 133, 173, 1);
+}
+
+.burger_constructor__draggable_list::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+    border: 1px solid rgb(85, 85, 85);
+}
+
+.burger_constructor__order_details {
+    margin: 0;
+    padding-top: 40px;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

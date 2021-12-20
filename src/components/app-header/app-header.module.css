@@ -1,0 +1,36 @@
+.appheader {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+        0px 16px 24px rgba(0, 0, 0, 0.04),
+        0px 4px 8px rgba(0, 0, 0, 0.04),
+        0px 0px 1px rgba(0, 0, 0, 0.04);
+}
+
+.appheader__menu_list {
+    max-width: 1059px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.appheader__menu_item_left {
+    margin: 0;
+    padding: 0 49px 0 0;
+}
+
+.appheader__menu_item_center {
+    margin: 0;
+    padding: 0 312px 0 83px;
+}
+
+.appheader__menu_item_right {
+    margin: 0;
+    padding: 0;
+}
