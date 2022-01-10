@@ -10,7 +10,7 @@ export default function OrderDetails() {
 
         <>
             {isLoading && (
-                <span className={`${styles.order__container, styles.order__loading} text text_type_main-default mb-8`}>
+                <span className={`${styles.order__loading} text text_type_main-default mb-8`}>
                     Загрузка...
                 </span>)}
 

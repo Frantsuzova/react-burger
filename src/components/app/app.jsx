@@ -74,14 +74,14 @@ export default function App() {
     /*--------------------------------------------------------------------- */
 
     const initialIngredients = state.data;
-    console.log(initialIngredients);
+
 
     const [order, setOrder] = React.useState({
         result: null,
         isLoading: false,
         error: null,
     });
-    console.log('answer0: ', order);
+
 
     const doOrder = () => {
         //булки
@@ -90,7 +90,7 @@ export default function App() {
         )._id;
         //все остальное
         let otherIngrId = initialIngredients
-            .filter((elem) => elem.type != "bun")
+            .filter((elem) => elem.type !== "bun")
             .map((elem) => elem._id);
         //результат
         let result = otherIngrId.concat(bunId, bunId);
