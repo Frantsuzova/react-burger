@@ -14,8 +14,8 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from '../modal/modal';
 
 //контексты
-import { ProductContext } from "../../contexts/productContext";
-import { OrderContext } from "../../contexts/orderContext";
+import { ProductContext } from "../../services/productContext";
+import { OrderContext } from "../../services/orderContext";
 
 export default function App() {
     //console.log(dataUrl);
@@ -29,7 +29,7 @@ export default function App() {
     });
 
     React.useEffect(() => {
-        fetch(`${dataUrl}`)
+        fetch(`${dataUrl}/ingredients`)
             .then(res => getResponse(res))
             .then(
                 (res) => {
@@ -79,24 +79,23 @@ export default function App() {
     const [order, setOrder] = React.useState({
         result: null,
         isLoading: false,
-        error: null,
+        error: '',
     });
 
 
-    const doOrder = () => {
+    const doOrder = async () => {
         //булки
-        let bunId = initialIngredients.find((elem) =>
+        const bunId = initialIngredients.find((elem) =>
             elem.type === "bun" ? elem : 0
         )._id;
         //все остальное
-        let otherIngrId = initialIngredients
+        const otherIngrId = initialIngredients
             .filter((elem) => elem.type !== "bun")
             .map((elem) => elem._id);
         //результат
-        let result = otherIngrId.concat(bunId, bunId);
+        const result = otherIngrId.concat(bunId, bunId);
 
         //сервер
-        const url = "https://norma.nomoreparties.space/api/orders";
         const requestOption = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -104,20 +103,20 @@ export default function App() {
                 ingredients: result,
             }),
         };
-        (async () => {
-            try {
-                setOrder({ ...order, isLoading: true });
-                const res = await fetch(url, requestOption);
-                if (res.ok) {
-                    const result = await res.json();
-                    setOrder({ ...order, isLoading: false, result: result });
-                } else {
-                    return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-                }
-            } catch (e) {
-                setOrder({ ...order, isLoading: false, error: e });
+
+        try {
+            setOrder({ ...order, isLoading: true });
+            const res = await fetch(`${dataUrl}/orders`, requestOption);
+            if (res.ok) {
+                const result = await res.json();
+                setOrder({ ...order, isLoading: false, result: result });
+            } else {
+                throw new Error(`Ошибка ${res.status}`);
             }
-        })();
+        } catch (e) {
+            setOrder({ ...order, isLoading: false, error: e });
+        }
+
         openModal({ modalType: "orderDetail" });
     }
 
@@ -130,6 +129,7 @@ export default function App() {
 
             {/*основной интерфейс*/}
             <main className={appStyles.container}>
+                {state.hasError && "Ошибка" && <div>{state.error}</div>}
                 {/*левая часть - ингридиенты списком*/}
                 <section className={appStyles.container_left + ' mr-5'}>
                     <BurgerIngredients items={state.data} openModal={openModal} />
@@ -138,8 +138,7 @@ export default function App() {
                 <section className={appStyles.container_right + ' ml-5'}>
                     {/* снизу и сверху фиксированные слои булок + посередине все-все остальное */}
                     <ProductContext.Provider value={initialIngredients}>
-                        {/*<BurgerConstructor items={state.data} openModal={openModal} />*/}
-                        <BurgerConstructor items={state.data} doOrder={doOrder} openModal={openModal} />
+                        <BurgerConstructor doOrder={doOrder} />
                     </ProductContext.Provider>
                 </section>
 

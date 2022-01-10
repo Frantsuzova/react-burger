@@ -1,11 +1,12 @@
 import check from "../../images/done.svg"
 import styles from "./order-details.module.css"
 import React from "react";
-import { OrderContext } from "../../contexts/orderContext";
+import { OrderContext } from "../../services/orderContext";
 
 export default function OrderDetails() {
     const orderContext = React.useContext(OrderContext);
     const { result, isLoading, error } = orderContext;
+
     return (
 
         <>

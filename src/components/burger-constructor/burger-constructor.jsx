@@ -11,7 +11,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 //контекст
-import { ProductContext } from "../../contexts/productContext";
+import { ProductContext } from "../../services/productContext";
 
 export default function BurgerConstructor({ doOrder }) {
 
@@ -23,10 +23,10 @@ export default function BurgerConstructor({ doOrder }) {
     });
     const otherIngr = foodContext.filter((item) => item.type !== 'bun');
 
-
     //цена
     const bunPrice = bun ? (bun.price * 2) : 0;
     const otherIngrPrice = otherIngr ? (otherIngr.reduce((acc, p) => acc + p.price, 0)) : 0;
+
 
     return (
         <>
