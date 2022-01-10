@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-//import { BurgerIngredientsCategoryType } from '../../utils/types.js';
+import React from "react";
+//import { useDrag, useDrop } from "react-dnd"; //с первого раза не удалось запустить:D
 import burgerConstructorStyles from './burger-constructor.module.css';
-//компоненнты от яндекса
+//компоненты от яндекса
 import {
     ConstructorElement,
     DragIcon,
@@ -9,22 +10,23 @@ import {
     Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-//export default function BurgerConstructor(props) {
-export default function BurgerConstructor({ openModal, items }) {
+//контекст
+import { ProductContext } from "../../contexts/productContext";
+
+export default function BurgerConstructor({ doOrder }) {
+
+    const foodContext = React.useContext(ProductContext);
 
     //подготовка к моделированию бургера
-    const bun = items.find((item) => item.type === 'bun');
-    const otherIngr = items.filter((item) => item.type !== 'bun');
+    const bun = foodContext.find((elem) => {
+        return elem.type === "bun";
+    });
+    const otherIngr = foodContext.filter((item) => item.type !== 'bun');
+
 
     //цена
     const bunPrice = bun ? (bun.price * 2) : 0;
     const otherIngrPrice = otherIngr ? (otherIngr.reduce((acc, p) => acc + p.price, 0)) : 0;
-
-    //клик
-    function onClick() {
-        //console.log('пока все работает');
-        openModal({ modalType: "orderDetail" });
-    }
 
     return (
         <>
@@ -44,6 +46,7 @@ export default function BurgerConstructor({ openModal, items }) {
                 }
                 {/*то, что со скроллом*/}
                 <li className={burgerConstructorStyles.burger_constructor__main_list_item}>
+
                     {otherIngr &&
                         <ul className={burgerConstructorStyles.burger_constructor__draggable_list} key="middle_items">
                             {otherIngr.map((item, index) => (
@@ -53,13 +56,14 @@ export default function BurgerConstructor({ openModal, items }) {
                                         text={item.name}
                                         thumbnail={item.image}
                                         price={item.price}
-                                    />
+                                        id={item._id}
+                                    >{/*console.log(item)*/}</ConstructorElement>
                                 </li>
                             ))}
                         </ul>
                     }
-                </li>
 
+                </li>
 
                 {/* низ бургера (заблочен для сдвига) */}
                 {bun &&
@@ -82,7 +86,7 @@ export default function BurgerConstructor({ openModal, items }) {
                 <span className='ml-2 mr-10'>
                     <CurrencyIcon type="primary" />
                 </span>
-                <Button type="primary" size="medium" onClick={onClick}>
+                <Button type="primary" size="medium" onClick={doOrder}>
                     Оформить заказ
                 </Button>
             </div>
@@ -91,10 +95,6 @@ export default function BurgerConstructor({ openModal, items }) {
 }
 
 // проверка типов
-//BurgerConstructor.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
 BurgerConstructor.propTypes = {
-    openModal: PropTypes.func.isRequired,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        type: PropTypes.string.isRequired
-    }).isRequired).isRequired
+    doOrder: PropTypes.func.isRequired
 };
