@@ -57,4 +57,3 @@ BurgerIngredients.propTypes = {
         type: PropTypes.string.isRequired
     }).isRequired).isRequired
 };
-
