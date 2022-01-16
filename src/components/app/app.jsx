@@ -1,9 +1,7 @@
 import React from "react";
 import appStyles from './app.module.css';
-// данные
+//
 import { dataUrl } from '../../utils/data.js';
-// подключение к апи
-import getResponse from '../../utils/api.js';
 
 // компоненты
 import AppHeader from '../app-header/app-header.jsx';
@@ -13,157 +11,58 @@ import OrderDetails from '../order-details/order-details';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from '../modal/modal';
 
-//контексты
-import { ProductContext } from "../../services/productContext";
-import { OrderContext } from "../../services/orderContext";
+
+//
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDispatch, useSelector } from 'react-redux'
+import { getIngredients } from '../../services/actions/index'
+
+
 
 export default function App() {
-    //console.log(dataUrl);
-    /*--------------------------------------------------------------------- */
-    /* берем данные */
-    const [state, setState] = React.useState({
-        isLoading: false,
-        hasError: false,
-        error: '',
-        data: []
-    });
+    const dispatch = useDispatch();
+    const { hasError, error, isLoading, burgerData } = useSelector(state => state.apiList)
+    const { ingridientModal, orderModal } = useSelector(state => state.modalInfo)
+
 
     React.useEffect(() => {
-        fetch(`${dataUrl}/ingredients`)
-            .then(res => getResponse(res))
-            .then(
-                (res) => {
-                    setState(state => ({
-                        ...state, isLoading: true, data: res.data
-                    }));
-                })
-            .catch((error) => {
-                setState(state => ({
-                    ...state, isLoading: false, hasError: true, error: error
-                }))
-            });
-
+        dispatch(getIngredients(`${dataUrl}/ingredients`))
     }, []);
-
-    /* данные получены */
-    /*--------------------------------------------------------------------- */
-
-    /* работа с модальными окнами */
-    /*--------------------------------------------------------------------- */
-    const [oderPopup, setOrderPopup] = React.useState(false);
-    const [ingredientPopup, setIngredientPopup] = React.useState(false);
-    const [ingredientInfo, setIngredientData] = React.useState({ data: null });
-
-    function openModal({ modalType, itemId }) {
-        let ingredientInfo = null;
-        if (modalType === "ingredientDetail") {
-            setIngredientPopup(true);
-            ingredientInfo = state.data.find((item) => item._id === itemId);
-            setIngredientData({ data: ingredientInfo });
-        } else {
-            if (modalType === "orderDetail") {
-                setOrderPopup(true);
-            }
-        }
-    }
-
-    function closeModal() {
-        setOrderPopup(false);
-        setIngredientPopup(false);
-    }
-    /*--------------------------------------------------------------------- */
-
-    const initialIngredients = state.data;
-
-
-    const [order, setOrder] = React.useState({
-        result: null,
-        isLoading: false,
-        error: '',
-    });
-
-
-    const doOrder = async () => {
-        //булки
-        const bunId = initialIngredients.find((elem) =>
-            elem.type === "bun" ? elem : 0
-        )._id;
-        //все остальное
-        const otherIngrId = initialIngredients
-            .filter((elem) => elem.type !== "bun")
-            .map((elem) => elem._id);
-        //результат
-        const result = otherIngrId.concat(bunId, bunId);
-
-        //сервер
-        const requestOption = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                ingredients: result,
-            }),
-        };
-
-        try {
-            setOrder({ ...order, isLoading: true });
-            const res = await fetch(`${dataUrl}/orders`, requestOption);
-            if (res.ok) {
-                const result = await res.json();
-                setOrder({ ...order, isLoading: false, result: result });
-            } else {
-                throw new Error(`Ошибка ${res.status}`);
-            }
-        } catch (e) {
-            setOrder({ ...order, isLoading: false, error: e });
-        }
-
-        openModal({ modalType: "orderDetail" });
-    }
-
-    /*--------------------------------------------------------------------- */
 
     return (
         <>
             {/*шапка*/}
             <AppHeader />
+            {hasError && "Ошибка" && <div>{error}</div>}
 
             {/*основной интерфейс*/}
-            <main className={appStyles.container}>
-                {state.hasError && "Ошибка" && <div>{state.error}</div>}
-                {/*левая часть - ингридиенты списком*/}
-                <section className={appStyles.container_left + ' mr-5'}>
-                    <BurgerIngredients items={state.data} openModal={openModal} />
-                </section>
-                {/*правая часть - конструктор*/}
-                <section className={appStyles.container_right + ' ml-5'}>
-                    {/* снизу и сверху фиксированные слои булок + посередине все-все остальное */}
-                    <ProductContext.Provider value={initialIngredients}>
-                        <BurgerConstructor doOrder={doOrder} />
-                    </ProductContext.Provider>
-                </section>
+            {!isLoading && !hasError && burgerData && (
+                <main className={appStyles.container}>
 
-            </main>
+                    <DndProvider backend={HTML5Backend}>
+                        {/*левая часть - ингридиенты списком*/}
+                        <section className={appStyles.container_left + ' mr-5'}>
+                            <BurgerIngredients />
+                        </section>
+                        {/*правая часть - конструктор*/}
+                        <section className={appStyles.container_right + ' ml-5'}>
+                            {/* снизу и сверху фиксированные слои булок + посередине все-все остальное */}
+                            <BurgerConstructor />
+                        </section>
 
-            {/*модальные окна*/}
-            {ingredientPopup && (
-                <Modal closeModal={closeModal}>
-                    <IngredientDetails
-                        image={ingredientInfo.data.image}
-                        name={ingredientInfo.data.name}
-                        calories={ingredientInfo.data.calories}
-                        fat={ingredientInfo.data.fat}
-                        proteins={ingredientInfo.data.proteins}
-                        carbohydrates={ingredientInfo.data.carbohydrates}
-                    />
-                </Modal>
+
+                    </DndProvider>
+
+                    {/*модальные окна*/}
+                    {ingridientModal && <Modal children={<IngredientDetails />} />}
+                    {orderModal && <Modal children={<OrderDetails />} />}
+
+                </main>
+
+
             )}
-            <OrderContext.Provider value={order}>
-                {oderPopup && (
-                    <Modal closeModal={closeModal}>
-                        <OrderDetails />
-                    </Modal>
-                )}
-            </OrderContext.Provider>
+
         </>
     );
 }

@@ -3,17 +3,41 @@ import burgerIngredientsCardStyles from './burger-ingredients-card.module.css';
 // компоненты от яндекса
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-//export default function BurgerIngredientsCard(props) {
-export default function BurgerIngredientsCard({ name, id, image, price, value, openModal }) {
+//
+import { useDispatch } from "react-redux";
+import { useDrag } from 'react-dnd';
+import { itemTypes } from "../../services/actions/index";
+import { currentIngredient } from "../../services/actions/index";
 
-    function onClick() {
-        openModal({ modalType: "ingredientDetail", itemId: id });
-    }
+//export default function BurgerIngredientsCard(props) {
+//{ name, id, image, price, value, openModal }
+export default function BurgerIngredientsCard({ id, image, price, name, index, elem }) {
+
+    /*************************************************************** */
+
+    const dispatch = useDispatch();
+
+    const [{ isDragging }, dragRef] = useDrag({
+        type: itemTypes.ingredient,
+        item: {
+            item: elem,
+            index: index
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging() ? 0.4 : 1,
+        })
+    })
+    /*************************************************************** */
+
 
     return (
-        <li className={burgerIngredientsCardStyles.burgeringredients_card} onClick={onClick}>
+        <li
+            className={burgerIngredientsCardStyles.burgeringredients_card}
+            ref={dragRef} id={id}
+            onClick={() => dispatch(currentIngredient(elem))}
+        >
             {/*подсчет сколько взято*/}
-            {value ? <Counter count={value} /> : null}
+            {elem.counter > 0 && <Counter count={elem.counter} size="default" />}
             {/*визуалка*/}
             <img src={image} alt={name} title={name} className="ml-4 mr-4" />
             {/*цена*/}
@@ -30,12 +54,3 @@ export default function BurgerIngredientsCard({ name, id, image, price, value, o
 }
 
 // проверка типов
-const BurgerIngredientsCardTypes = PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
-    openModal: PropTypes.func.isRequired,
-});
-
-BurgerIngredientsCard.propTypes = BurgerIngredientsCardTypes.isRequired;
