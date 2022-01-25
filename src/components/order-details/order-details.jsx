@@ -9,8 +9,6 @@ export default function OrderDetails() {
     */
     const { hasError, error, isLoading, orderInfo, success } = useSelector(state => state.createdOrder)
 
-    console.log('ты в деталях заказа');
-
     return (
 
         <>

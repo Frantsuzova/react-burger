@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useDrag, useDrop } from "react-dnd";
 import burgerConstructorStyles from './burger-constructor.module.css';
 //компоненты от яндекса
@@ -122,6 +123,14 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
 
     );
 }
+/*проверка типов*/
+Ingredient.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    index: PropTypes.number,
+};
 /********** */
 
 export default function BurgerConstructor() {

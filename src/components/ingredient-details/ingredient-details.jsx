@@ -1,7 +1,6 @@
 import styles from "./ingredient-details.module.css";
 import { useSelector } from 'react-redux';
 
-//function IngredientDetails({ name, image, calories, fat, proteins, carbohydrates }) {
 function IngredientDetails() {
     const { name, image, calories, proteins, fat, carbohydrates } = useSelector(state => state.currentIngredient)
     const modal = useSelector(state => state.modalInfo.ingridientModal)

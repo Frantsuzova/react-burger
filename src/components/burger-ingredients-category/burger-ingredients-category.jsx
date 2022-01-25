@@ -35,7 +35,6 @@ export default function BurgerIngredientsCategory({ textContent, cardType }) {
     return (
         <section id={cardType}>
             <h2 className="text text_type_main-medium mt-10 mb-6">
-                {/*heading*/}
                 {textContent}
             </h2>
 
@@ -48,9 +47,10 @@ export default function BurgerIngredientsCategory({ textContent, cardType }) {
 
 
 // проверка типов
-//BurgerIngredientsCategory.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+
 const BurgerIngredientsCategoryTypes = PropTypes.shape({
-    heading: PropTypes.string.isRequired, //textContent
+    textContent: PropTypes.string.isRequired,
+    cardType: PropTypes.string.isRequired,
 });
 
 BurgerIngredientsCategory.propTypes = BurgerIngredientsCategoryTypes.isRequired;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import burgerIngredientsCardStyles from './burger-ingredients-card.module.css';
 // компоненты от яндекса
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,8 +8,7 @@ import { useDrag } from 'react-dnd';
 import { itemTypes } from "../../services/actions/index";
 import { currentIngredient } from "../../services/actions/index";
 
-//export default function BurgerIngredientsCard(props) {
-//{ name, id, image, price, value, openModal }
+
 export default function BurgerIngredientsCard({ id, image, price, name, index, elem }) {
 
     /*************************************************************** */
@@ -53,4 +51,3 @@ export default function BurgerIngredientsCard({ id, image, price, name, index, e
     );
 }
 
-// проверка типов
