@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useDrag, useDrop } from "react-dnd";
 import burgerConstructorStyles from './burger-constructor.module.css';
+
 //компоненты от яндекса
 import {
     ConstructorElement,
@@ -27,11 +28,11 @@ function Ingredients() {
     const mainIngredients = useSelector(
         (state) => state.constructorList.mainIngredients
     );
+
     return mainIngredients.map((elem, i) => {
         return (
-
             <Ingredient
-                key={elem.key + elem.keyAdd}
+                key={elem.keyAdd}
                 className={burgerConstructorStyles.burger_constructor__draggable_list}
                 elemKey={elem}
                 id={elem._id}
@@ -39,9 +40,7 @@ function Ingredients() {
                 price={elem.price}
                 image={elem.image_mobile}
                 index={i}
-
             />
-
         );
     });
 }
@@ -51,10 +50,11 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
     const dispatch = useDispatch();
     const totalCard = useSelector((state) => state.apiList);
     const orderWasCreated = useSelector(state => state.createdOrder.orderBase)
-
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
+
+
     useEffect(() => {
         dispatch(count(mainIngredients, elemKey, totalCard, orderWasCreated));
     }, [mainIngredients, bun, deleteCard, switchCard]);
@@ -68,11 +68,13 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
         }),
         hover: (item, monitor) => {
             if (!ref.current) {
+
                 return;
             }
             const dragIndex = item.index;
             const hoverIndex = index;
             if (dragIndex === hoverIndex) {
+
                 return;
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
@@ -82,6 +84,7 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+
                 return;
             }
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
@@ -134,12 +137,12 @@ Ingredient.propTypes = {
 /********** */
 
 export default function BurgerConstructor() {
-
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
 
     const dispatch = useDispatch();
+
     const [, dropIngredient] = useDrop({
         accept: itemTypes.ingredient,
         collect: (monitor) => ({
@@ -151,7 +154,6 @@ export default function BurgerConstructor() {
     });
 
     const total = useSelector(state => state.apiList.burgerData)
-
     useEffect(() => {
         dispatch(countPrice(mainIngredients, bun));
 
@@ -163,6 +165,8 @@ export default function BurgerConstructor() {
         .map((elem) => elem._id)
         .concat(bun._id, bun._id) : infoToSend = null
 
+
+
     return (
         <>
 
@@ -170,7 +174,7 @@ export default function BurgerConstructor() {
 
                 {/* верх бургера (заблочен для сдвига) */}
                 {bun.type &&
-                    <li className={burgerConstructorStyles.burger_constructor__main_list_item} key="top_bun">
+                    <li className={burgerConstructorStyles.burger_constructor__main_list_item} key={bun.keyAdd}>
                         <ConstructorElement
                             type='top'
                             isLocked={true}
@@ -191,7 +195,9 @@ export default function BurgerConstructor() {
                         <div className={burgerConstructorStyles.burger_constructor__noingr}></div>
                     </div>
                 }
+
                 {/*то, что со скроллом*/}
+
                 {mainIngredients.length === 0 && bun.type &&
                     <div className={burgerConstructorStyles.burger_constructor__noingr_space_other}>
                         <p className='text text_type_main-medium'>
@@ -205,9 +211,15 @@ export default function BurgerConstructor() {
                             </span>
                         </p>
                     </div>}
+
+
+                {/************************************************************************************** */}
                 <li className={burgerConstructorStyles.burger_constructor__draggable_list} >
                     {mainIngredients.length > 0 && <Ingredients />}
                 </li>
+                {/************************************************************************************** */}
+
+
 
                 {/* низ бургера (заблочен для сдвига) */}
                 {bun.type &&
@@ -246,4 +258,3 @@ export default function BurgerConstructor() {
     );
 }
 
-// проверка типов

@@ -9,10 +9,12 @@ import { useSelector } from "react-redux";
 
 function Cards({ type }) {
     const info = useSelector((state) => state.apiList.burgerData);
+
     return (
         <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
             ' ml-4 mt-6 mr-2 mb-10'}>
             {info.map((elem, i) => {
+
                 if (elem.type === type) {
                     return (
                         <BurgerIngredientsCard

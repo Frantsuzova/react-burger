@@ -1,4 +1,5 @@
 import { dataUrl } from '../../utils/data.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export const GET_INGREDIENTS_API_REQUEST = "GET_INGREDIENTS_API_REQUEST";
 export const GET_INGREDIENTS_API_SUCCESS = "GET_INGREDIENTS_API_SUCCESS";
@@ -23,7 +24,9 @@ export const CONSTRUCTOR_CLEAN = 'CONSTRUCTOR_CLEAN';
 
 
 export function getIngredients(url) {
+
     return async function (dispatch) {
+
         dispatch({
             type: GET_INGREDIENTS_API_REQUEST,
         });
@@ -55,6 +58,7 @@ export function getIngredients(url) {
 
 
 export function getConstructorIngredients(data) {
+
     const bun = data.find((elem) => (elem.type === "bun" ? elem : 0));
     bun.counter += 2;
     return function (dispatch) {
@@ -74,6 +78,7 @@ export function getConstructorIngredients(data) {
         });
     };
 }
+
 
 export function currentIngredient(elem) {
     return function (dispatch) {
@@ -105,8 +110,6 @@ export function sendOrder(data) {
                 ingredients: data,
             }),
         };
-
-
         try {
             const res = await fetch(`${dataUrl}/orders`, requestOption);
             if (res.ok) {
@@ -143,7 +146,7 @@ export function switchCard(dragIndex, hoverIndex, ingredients, dispatch) {
     newIngredients.splice(hoverIndex, 0, dragIngredient);
     return function (dispatch) {
         dispatch({
-            type: "CONSTRUCTOR_CARD_CHANGE",
+            type: CONSTRUCTOR_CARD_CHANGE,
             value: newIngredients,
         });
     };
@@ -152,16 +155,18 @@ export function switchCard(dragIndex, hoverIndex, ingredients, dispatch) {
 export function deleteCard(mainIngredients, id, elemKey) {
     let result = [];
     const filtered = mainIngredients.filter((elem) => {
-        elem.keyAdd--;
+        elem.counter--;
         return elem !== elemKey;
     });
-    mainIngredients.length === 1
+
+    mainIngredients.length === 0
         ? (result = mainIngredients)
         : (result = filtered);
+
     return function (dispatch) {
         dispatch({
             type: CONSTRUCTOR_CARD_CHANGE,
-            value: result,
+            value: result
         });
     };
 }
@@ -200,23 +205,26 @@ export function addCard(elem, mainIngredients, bun) {
     if (elem.item)
         return function (dispatch) {
             if (elem.item.type === "bun" && elem.item !== bun) {
-                elem.item.keyAdd = 2;
-                bun.counter = 0;
+                elem.item.keyAdd = uuidv4();
                 elem.item.counter = 2;
+                bun.counter = 0;
                 dispatch({
                     type: CONSTRUCTOR_BUN,
                     bun: elem.item,
                 });
+
             }
             if (elem.item.type !== "bun" && !mainIngredients.includes(elem.item)) {
                 newMainIngredients.push(elem.item);
-                elem.item.keyAdd++;
+                elem.item.keyAdd = uuidv4();
+
             }
+
             if (elem.item.type !== "bun" && mainIngredients.includes(elem.item)) {
-                elem.item.keyAdd++;
                 Object.assign(newElem, elem.item);
-                newElem.key += newElem.keyAdd;
                 newMainIngredients.push(newElem);
+                newElem.keyAdd = uuidv4();
+
             }
             dispatch({
                 type: CONSTRUCTOR_MAIN_INGREDIENTS,
@@ -224,6 +232,7 @@ export function addCard(elem, mainIngredients, bun) {
             });
         };
 }
+
 
 export function count(mainIngredients, elemKey, totalCard) {
     const newTotal = [...totalCard.burgerData].filter((elem) => elem.type !== "bun");
@@ -254,22 +263,22 @@ export function count(mainIngredients, elemKey, totalCard) {
     exact.counter = counted;
     newTotal.splice(filtered, 1, exact);
 
-
     return function (dispatch) {
         dispatch({
             type: COUNT_CARD,
-            value: totalCard.burgerData
+            value: totalCard.burgerData,
         });
     };
 }
 
+
 export function closeModal() {
     return function (dispatch) {
         dispatch({
-            type: 'MODAL_CLOSE'
+            type: MODAL_CLOSE
         })
         dispatch({
-            type: 'DELETE_CURRENT_INGREDIENT'
+            type: DELETE_CURRENT_INGREDIENT
         })
     }
 }
@@ -278,17 +287,17 @@ export function openModalOrder(infoToSend) {
     return function (dispatch) {
         if (infoToSend) {
             dispatch({
-                type: "CONSTRUCTOR_CLEAN"
+                type: CONSTRUCTOR_CLEAN
             })
             dispatch(sendOrder(infoToSend))
             dispatch({
-                type: "MODAL_ORDER_OPEN",
+                type: MODAL_ORDER_OPEN,
                 open: true,
             })
         }
         if (!infoToSend) {
             dispatch({
-                type: "MODAL_ORDER_ERROR",
+                type: MODAL_ORDER_ERROR,
                 open: true,
             })
         }
