@@ -1,23 +1,89 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 // компонент
 import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ingredients-category.jsx';
 // компонент от яндекса
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export default function BurgerIngredients({ openModal, items }) {
-    const [current, setCurrent] = React.useState('bun');
+//
+import { useDispatch, useSelector } from "react-redux";
+import { switchTab } from "../../services/actions";
+import { useRef, useEffect } from "react";
 
-    const bunRef = React.useRef(null);
-    const sauceRef = React.useRef(null);
-    const mainRef = React.useRef(null);
+function MainTab() {
+    const dispatch = useDispatch();
+    const current = useSelector((state) => state.tabSwtich.currentTab);
 
-    function scrollTab(value) {
-        if (value) {
-            value.scrollIntoView();
+    const toSwitchTab = (e) => {
+        dispatch(switchTab(e));
+        const element = document.getElementById(e);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
         }
-    }
+    };
+
+    return (
+        <div className={burgerIngredientsStyles.burgeringredients__tab_selector}>
+            <Tab
+                value="bun"
+                active={current === "bun"}
+                onClick={(e) => toSwitchTab(e)}
+            >
+                Булки
+            </Tab>
+            <Tab
+                value="sauce"
+                active={current === "sauce"}
+                onClick={(e) => toSwitchTab(e)}
+            >
+                Соусы
+            </Tab>
+            <Tab
+                value="main"
+                active={current === "main"}
+                onClick={(e) => toSwitchTab(e)}
+            >
+                Начинки
+            </Tab>
+        </div>
+    );
+}
+
+export default function BurgerIngredients() {
+    const dispatch = useDispatch();
+    const scrollRef = useRef();
+    const ingredientsScroll = (e) => {
+        const bun = e.target.childNodes[0].offsetHeight;
+        const sauce = e.target.childNodes[1].clientHeight;
+
+        if (scrollRef.current.scrollTop < bun) {
+            dispatch(switchTab("bun"));
+        }
+        if (
+            scrollRef.current.scrollTop >= bun &&
+            scrollRef.current.scrollTop < bun + sauce
+        ) {
+            dispatch(switchTab("sauce"));
+        }
+        if (scrollRef.current.scrollTop >= bun + sauce) {
+            dispatch(switchTab("main"));
+        }
+    };
+    useEffect(() => {
+
+        if (scrollRef && scrollRef.current) {
+            scrollRef.current.addEventListener("scroll", (e) => {
+                ingredientsScroll(e);
+            });
+        }
+
+        return () => {
+            scrollRef.current.removeEventListener("scroll", (e) => {
+                ingredientsScroll(e);
+            });
+        };
+
+
+    }, []);
 
 
     return (
@@ -26,34 +92,17 @@ export default function BurgerIngredients({ openModal, items }) {
                 Соберите бургер
             </h1>
             {/*переключалка между ингридиентами*/}
-            <div className={burgerIngredientsStyles.burgeringredients__tab_selector}>
-                <Tab value="bun" active={current === 'bun'} onClick={(value) => {
-                    setCurrent(value);
-                    scrollTab(bunRef.current);
-                }}>Булки</Tab>
-                <Tab value="sauce" active={current === 'sauce'} onClick={(value) => {
-                    setCurrent(value);
-                    scrollTab(sauceRef.current);
-                }}>Соусы</Tab>
-                <Tab value="main" active={current === 'main'} onClick={(value) => {
-                    setCurrent(value);
-                    scrollTab(mainRef.current);
-                }}>Начинки</Tab>
-            </div>
+            <MainTab />
+
             {/*список ингридиентов простыней*/}
-            <div className={burgerIngredientsStyles.burgeringredients__scroll_container}>
-                <BurgerIngredientsCategory ref={bunRef} heading="Булки" openModal={openModal} items={items.filter(item => item.type === 'bun')} />
-                <BurgerIngredientsCategory ref={sauceRef} heading="Соусы" openModal={openModal} items={items.filter(item => item.type === 'sauce')} />
-                <BurgerIngredientsCategory ref={mainRef} heading="Начинки" openModal={openModal} items={items.filter(item => item.type === 'main')} />
+            <div className={burgerIngredientsStyles.burgeringredients__scroll_container} ref={scrollRef}>
+                <BurgerIngredientsCategory textContent="Булки"
+                    cardType="bun" />
+                <BurgerIngredientsCategory textContent="Соусы"
+                    cardType="sauce" />
+                <BurgerIngredientsCategory textContent="Начинки"
+                    cardType="main" />
             </div>
         </>
     );
 }
-
-// проверка типов
-BurgerIngredients.propTypes = {
-    openModal: PropTypes.func.isRequired,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        type: PropTypes.string.isRequired
-    }).isRequired).isRequired
-};

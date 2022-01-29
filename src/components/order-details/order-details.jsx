@@ -1,11 +1,13 @@
 import check from "../../images/done.svg"
 import styles from "./order-details.module.css"
-import React from "react";
-import { OrderContext } from "../../services/orderContext";
+import { useSelector } from 'react-redux';
 
 export default function OrderDetails() {
+    /*
     const orderContext = React.useContext(OrderContext);
     const { result, isLoading, error } = orderContext;
+    */
+    const { hasError, error, isLoading, orderInfo, success } = useSelector(state => state.createdOrder)
 
     return (
 
@@ -15,9 +17,9 @@ export default function OrderDetails() {
                     Загрузка...
                 </span>)}
 
-            {!isLoading && !error && result && (<div className={`${styles.order__container} pt-30 pb-25`}>
+            {!isLoading && !hasError && success && (<div className={`${styles.order__container} pt-30 pb-25`}>
                 <div className="mb-8">
-                    <p className={`${styles.order__digitdecor} text text_type_digits-large`}>{result.order.number}</p>
+                    <p className={`${styles.order__digitdecor} text text_type_digits-large`}>{orderInfo.order.number}</p>
                 </div>
                 <p className="text text_type_main-medium">Идентификатор заказа</p>
                 <img className={`${styles.order__img} mb-15 mt-15`}
@@ -31,6 +33,12 @@ export default function OrderDetails() {
                     </p>
                 </div>
             </div>)}
+            {hasError && (
+                <span className={
+                    "text text_type_digits-large mb-8"}>
+                    {`Ошибка ${error}`}
+                </span>
+            )}
         </>
     );
 }

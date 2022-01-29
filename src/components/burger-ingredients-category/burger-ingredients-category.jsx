@@ -1,30 +1,58 @@
-import React from "react";
 import PropTypes from 'prop-types';
-import { BurgerIngredientsCategoryType } from '../../utils/types.js';
 import burgerIngredientsCategoryStyles from './burger-ingredients-category.module.css';
 // компонент
 import BurgerIngredientsCard from '../burger-ingredients-card/burger-ingredients-card.jsx';
 
-const BurgerIngredientsCategory = React.forwardRef(({ heading, items, openModal }, ref) => {
+import { useSelector } from "react-redux";
+
+/************************************************************* */
+
+function Cards({ type }) {
+    const info = useSelector((state) => state.apiList.burgerData);
+
     return (
-        <section ref={ref}>
+        <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
+            ' ml-4 mt-6 mr-2 mb-10'}>
+            {info.map((elem, i) => {
+
+                if (elem.type === type) {
+                    return (
+                        <BurgerIngredientsCard
+                            name={elem.name}
+                            id={elem._id}
+                            price={elem.price}
+                            image={elem.image}
+                            key={elem._id}
+                            index={i}
+                            elem={elem} />
+                    );
+                }
+            })}
+        </ul>
+    );
+}
+/************************************************************* */
+
+export default function BurgerIngredientsCategory({ textContent, cardType }) {
+    return (
+        <section id={cardType}>
             <h2 className="text text_type_main-medium mt-10 mb-6">
-                {heading}
+                {textContent}
             </h2>
-            <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list + ' ml-4 mt-6 mr-2 mb-10'}>
-                {items.map((item) =>
-                    <BurgerIngredientsCard openModal={openModal} name={item.name} id={item._id} price={item.price} image={item.image} value={item.__v} key={item._id} />)}
-            </ul>
+
+            <Cards type={cardType} />
+
+
         </section>
     );
-})
-export default BurgerIngredientsCategory;
+};
+
+
 // проверка типов
-//BurgerIngredientsCategory.propTypes = PropTypes.arrayOf(BurgerIngredientsCategoryType).isRequired;
+
 const BurgerIngredientsCategoryTypes = PropTypes.shape({
-    heading: PropTypes.string.isRequired,
-    items: BurgerIngredientsCategoryType,
-    openModal: PropTypes.func.isRequired
+    textContent: PropTypes.string.isRequired,
+    cardType: PropTypes.string.isRequired,
 });
 
 BurgerIngredientsCategory.propTypes = BurgerIngredientsCategoryTypes.isRequired;

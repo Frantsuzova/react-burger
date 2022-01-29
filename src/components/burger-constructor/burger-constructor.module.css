@@ -1,11 +1,32 @@
 .burger_constructor__main_list {
     margin: 0;
     padding: 100px 0 0 0;
-    padding-top: 100px;
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.burger_constructor__noingr {
+    border: 2px solid transparent;
+    width: 600px;
+    height: 200px;
+    border-radius: 25px;
+    border: 2px solid #8585AD;
+
+}
+
+.burger_constructor__noingr_space {
+    margin: 0;
+    padding: 0 10px 10px 10px;
+}
+
+.burger_constructor__noingr_space_other {
+    align-self: center;
+    max-width: 500px;
+    padding: 10px;
+    margin: 0 0 0 35px;
+    color: #fff;
 }
 
 .burger_constructor__main_list_item {
@@ -13,20 +34,11 @@
     position: relative;
 }
 
-.burger_constructor__main_list_item:last-child {
-    padding-top: 270px;
-}
-
 .burger_constructor__draggable_list {
     overflow-y: scroll;
     max-height: 280px;
     list-style: none;
     padding: 0;
-    /*из расчета 3 опции + отступы*/
-    position: absolute;
-    /*чтобы скролл не съедал место*/
-    top: 0;
-    left: 2px;
     z-index: 1;
 }
 
@@ -40,6 +52,7 @@
 }
 
 .burger_constructor__draggable_list::-webkit-scrollbar {
+
     width: calc(var(--offset-base-size) * 2);
 }
 
