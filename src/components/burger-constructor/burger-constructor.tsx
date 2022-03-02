@@ -31,6 +31,7 @@ function Ingredients() {
         (state: RootState) => state.constructorList.mainIngredients
     );
     /***************************опять проблема с ключом*********************************************** */
+
     const setIngr = mainIngredients.map((elem: TIngredient, i: number) => (<Ingredient
         key={elem.keyAdd}
         className={burgerConstructorStyles.burger_constructor__draggable_list}
@@ -151,7 +152,7 @@ export default function BurgerConstructor() {
     //let infoToSend = null
     let infoToSend: null | Array<string> = null
     if (bun) {
-        console.log(bun);
+        //console.log(bun);
         bun.type ? infoToSend = mainIngredients
             .map((elem: { _id: string }) => elem._id)
             .concat(bun._id, bun._id) : infoToSend = null

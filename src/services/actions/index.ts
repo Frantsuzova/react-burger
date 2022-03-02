@@ -320,7 +320,7 @@ export function deleteCard(mainIngredients: Array<TIngredient>, elemKey: TIngred
     return function (dispatch: Dispatch<TIndexActions>) {
         console.log(totalCard)
         const filtered = mainIngredients.filter((elem) => {
-            elem.keyAdd--;
+            elem.counter--;
             return elem !== elemKey;
         });
 
@@ -382,10 +382,9 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
         return function (dispatch: Dispatch<TIndexActions>) {
             if (elem.item.type === "bun" && elem.item !== bun) {
                 elem.item.keyAdd = uuidv4();
-                elem.item.keyAdd = 2;
+                elem.item.counter = 2;
                 if (bun)
                     bun.counter = 0;
-                elem.item.counter = 2;
                 dispatch({
                     type: CONSTRUCTOR_BUN,
                     bun: elem.item,
@@ -396,10 +395,9 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
                 elem.item.keyAdd = uuidv4();
             }
             if (elem.item.type !== "bun" && mainIngredients.includes(elem.item)) {
-                newElem.keyAdd = uuidv4();
                 Object.assign(newElem, elem.item);
-                newElem.key += newElem.keyAdd;
                 newMainIngredients.push(newElem);
+                newElem.keyAdd = uuidv4();
             }
             dispatch({
                 type: CONSTRUCTOR_MAIN_INGREDIENTS,

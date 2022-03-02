@@ -20,7 +20,7 @@ function IngredientDetails() {
     const { name, image, calories, proteins, fat, carbohydrates } = useSelector((state: RootState) => state.currentIngredient)
     const modal = useSelector((state: RootState) => state.modalInfo.ingridientModal);
 
-    console.log('ты в деталях ингридиента');
+    //console.log('ты в деталях ингридиента');
     return (
         <div className={`${styles.ingredient__container} p-10`}>
             {/* заголовок ингридиента */}
