@@ -1,7 +1,7 @@
-import { dataUrl } from '../../utils/data.js';
+import { dataUrl } from '../../utils/data';
 import { Dispatch } from 'redux';
 import { TIngredient, TOrderSend, TModalData, Ielem, IElemInconstructor, IIngredientElem, newObj } from '../types/types'
-
+import { AppDispatch } from '../hooks';
 import { v4 as uuidv4 } from 'uuid';
 export const GET_INGREDIENTS_API_REQUEST: 'GET_INGREDIENTS_API_REQUEST' = "GET_INGREDIENTS_API_REQUEST";
 export const GET_INGREDIENTS_API_SUCCESS: 'GET_INGREDIENTS_API_SUCCESS' = "GET_INGREDIENTS_API_SUCCESS";
@@ -189,9 +189,9 @@ export type TIndexActions =
     | IGetIngredientsApiSuccess
     | IGetIngredientsApiRequest;
 /*************************************************************** */
-export function getIngredients(url: any) {
+export function getIngredients(url: string) {
 
-    return async function (dispatch: Dispatch<TIndexActions>) {
+    return async function (dispatch: AppDispatch) {
 
 
         dispatch({
@@ -228,7 +228,7 @@ export function getConstructorIngredients(data: Array<TIngredient>) {
         if (elem.type === "bun") { return elem }
         else return null
     }) || null;
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: CONSTRUCTOR_BUN,
             bun: bun,
@@ -245,7 +245,7 @@ export function getConstructorIngredients(data: Array<TIngredient>) {
 }
 
 export function currentIngredient(elem: IIngredientElem) {
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: WRITE_CURRENT_INGREDIENT,
             name: elem.name,
@@ -263,7 +263,7 @@ export function currentIngredient(elem: IIngredientElem) {
 }
 
 export function sendOrder(data: Array<object>) {
-    return async function (dispatch: Dispatch<TIndexActions>) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SEND_ORDER_REQUEST,
         });
@@ -295,7 +295,7 @@ export function sendOrder(data: Array<object>) {
 }
 
 export function switchTab(e: string) {
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: TAB_SWITCH,
             value: e,
@@ -308,7 +308,7 @@ export function switchCard(dragIndex: number, hoverIndex: number, ingredients: A
     const dragIngredient = newIngredients[dragIndex];
     newIngredients.splice(dragIndex, 1);
     newIngredients.splice(hoverIndex, 0, dragIngredient);
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: "CONSTRUCTOR_CARD_CHANGE",
             value: newIngredients,
@@ -317,7 +317,7 @@ export function switchCard(dragIndex: number, hoverIndex: number, ingredients: A
 }
 
 export function deleteCard(mainIngredients: Array<TIngredient>, elemKey: TIngredient, totalCard: any) {
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         console.log(totalCard)
         const filtered = mainIngredients.filter((elem) => {
             elem.counter--;
@@ -361,7 +361,7 @@ export function countPrice(mainIngredients: Array<TIngredient>, bun: TIngredient
     if (mainIngredients.length === 0) {
         mainPrice = 0;
     }
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: COUNT_TOTAL_PRICE,
             value: bunPrice + mainPrice,
@@ -379,7 +379,7 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
     let newMainIngredients = [...mainIngredients];
     let newElem: any = {};
     if (elem.item)
-        return function (dispatch: Dispatch<TIndexActions>) {
+        return function (dispatch: AppDispatch) {
             if (elem.item.type === "bun" && elem.item !== bun) {
                 elem.item.keyAdd = uuidv4();
                 elem.item.counter = 2;
@@ -436,7 +436,7 @@ export function count(mainIngredients: Array<TIngredient>, elemKey: { _id: strin
     exact.counter = counted;
     newTotal.splice(filtered, 1, exact);
 
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: COUNT_CARD,
             value: totalCard.burgerData,
@@ -445,7 +445,7 @@ export function count(mainIngredients: Array<TIngredient>, elemKey: { _id: strin
 }
 
 export function closeModal() {
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: MODAL_CLOSE,
         });
@@ -481,7 +481,7 @@ export function cleanCounter(total: any) {
         elem.counter = 0;
         return elem;
     });
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: COUNT_CARD,
             value: result,
@@ -492,7 +492,7 @@ export function cleanCounter(total: any) {
 
 
 export function currentOrder(elem: { number: number, name: string, status: string, ingredients: Array<object>, createdAt: string }) {
-    return function (dispatch: Dispatch<TIndexActions>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: WRITE_CURRENT_ORDER_DETAIL,
             number: elem.number,

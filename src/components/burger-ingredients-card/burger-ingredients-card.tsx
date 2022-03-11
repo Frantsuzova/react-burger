@@ -4,7 +4,8 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { FunctionComponent } from "react";
 
 //
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
+import { useDispatch } from '../../services/hooks';
 import { useDrag } from 'react-dnd';
 import { itemTypes } from "../../services/actions/index";
 import { currentIngredient } from "../../services/actions/index";

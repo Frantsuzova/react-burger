@@ -5,7 +5,8 @@ import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ing
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 //
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import { switchTab } from "../../services/actions";
 import { useRef, useEffect } from "react";
 import { RootState } from '../../services/reducers/index';
@@ -13,7 +14,7 @@ import { RootState } from '../../services/reducers/index';
 
 function MainTab() {
     const dispatch = useDispatch();
-    const current = useSelector((state: RootState) => state.tabSwtich.currentTab);
+    const current = useSelector((state) => state.tabSwtich.currentTab);
 
     const toSwitchTab = (e: string) => {
         dispatch(switchTab(e));

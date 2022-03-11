@@ -1,5 +1,6 @@
 import styles from "./ingredient-details.module.css";
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { RootState } from '../../services/reducers/index';
 import React, { FunctionComponent } from "react";
 
@@ -17,8 +18,8 @@ const Detail: FunctionComponent<{ type: string, content: number | null }> = ({ t
 }
 
 function IngredientDetails() {
-    const { name, image, calories, proteins, fat, carbohydrates } = useSelector((state: RootState) => state.currentIngredient)
-    const modal = useSelector((state: RootState) => state.modalInfo.ingridientModal);
+    const { name, image, calories, proteins, fat, carbohydrates } = useSelector((state) => state.currentIngredient)
+    const modal = useSelector((state) => state.modalInfo.ingridientModal);
 
     //console.log('ты в деталях ингридиента');
     return (

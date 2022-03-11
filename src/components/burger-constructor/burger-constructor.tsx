@@ -12,9 +12,9 @@ import {
 
 //
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import {
-    cleanCounter,
     openModalOrder,
     count,
     switchCard,
@@ -28,7 +28,7 @@ import { TIngredient } from '../../services/types/types';
 
 function Ingredients() {
     const mainIngredients = useSelector(
-        (state: RootState) => state.constructorList.mainIngredients
+        (state) => state.constructorList.mainIngredients
     );
     /***************************опять проблема с ключом*********************************************** */
 
@@ -52,9 +52,9 @@ function Ingredients() {
 
 const Ingredient: FunctionComponent<{ className: any, id: string, name: string, price: number, image: string, index: number, elemKey: TIngredient }> = ({ id, name, price, image, index, elemKey }) => {
     const dispatch = useDispatch();
-    const totalCard = useSelector((state: RootState) => state.apiList);
+    const totalCard = useSelector((state) => state.apiList);
     const { mainIngredients, bun } = useSelector(
-        (state: RootState) => state.constructorList
+        (state) => state.constructorList
     );
     useEffect(() => {
         dispatch(count(mainIngredients, elemKey, totalCard));
@@ -127,7 +127,7 @@ const Ingredient: FunctionComponent<{ className: any, id: string, name: string, 
 
 export default function BurgerConstructor() {
     const { mainIngredients, bun } = useSelector(
-        (state: RootState) => state.constructorList
+        (state) => state.constructorList
     );
     const dispatch = useDispatch();
     const [, dropIngredient] = useDrop({
@@ -148,7 +148,7 @@ export default function BurgerConstructor() {
 
     }, [mainIngredients, bun]);
 
-    const totalPrice = useSelector((state: RootState) => state.price.totalPrice);
+    const totalPrice = useSelector((state) => state.price.totalPrice);
     //let infoToSend = null
     let infoToSend: null | Array<string> = null
     if (bun) {

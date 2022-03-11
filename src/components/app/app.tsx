@@ -1,7 +1,7 @@
 import React from "react";
 import appStyles from './app.module.css';
 //
-import { dataUrl } from '../../utils/data.js';
+import { dataUrl } from '../../utils/data';
 
 // компоненты
 import AppHeader from '../app-header/app-header';
@@ -15,16 +15,16 @@ import Modal from '../modal/modal';
 //
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch, useSelector } from 'react-redux'
+//import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { getIngredients } from '../../services/actions/index'
 
 //
-import { RootState } from '../../services/reducers/index';
 
 export default function App() {
     const dispatch = useDispatch();
-    const { hasError, error, isLoading, burgerData } = useSelector((state: RootState) => state.apiList);
-    const { ingridientModal, orderModal } = useSelector((state: RootState) => state.modalInfo)
+    const { hasError, error, isLoading, burgerData } = useSelector((state) => state.apiList);
+    const { ingridientModal, orderModal } = useSelector((state) => state.modalInfo)
     React.useEffect(() => {
         dispatch(getIngredients(`${dataUrl}/ingredients`))
     }, []);
