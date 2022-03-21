@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import { useDrag, useDrop } from "react-dnd";
 import burgerConstructorStyles from './burger-constructor.module.css';
+import { FunctionComponent } from "react";
 
 //компоненты от яндекса
 import {
@@ -12,9 +12,9 @@ import {
 
 //
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import {
-    cleanCounter,
     openModalOrder,
     count,
     switchCard,
@@ -23,68 +23,67 @@ import {
     addCard,
 } from "../../services/actions/index";
 import { itemTypes } from "../../services/actions/index";
+import { RootState } from '../../services/reducers/index';
+import { TIngredient } from '../../services/types/types';
 
 function Ingredients() {
     const mainIngredients = useSelector(
         (state) => state.constructorList.mainIngredients
     );
+    /***************************опять проблема с ключом*********************************************** */
 
-    return mainIngredients.map((elem, i) => {
-        return (
-            <Ingredient
-                key={elem.keyAdd}
-                className={burgerConstructorStyles.burger_constructor__draggable_list}
-                elemKey={elem}
-                id={elem._id}
-                name={elem.name}
-                price={elem.price}
-                image={elem.image_mobile}
-                index={i}
-            />
-        );
-    });
+    const setIngr = mainIngredients.map((elem: TIngredient, i: number) => (<Ingredient
+        key={elem.keyAdd}
+        className={burgerConstructorStyles.burger_constructor__draggable_list}
+        elemKey={elem}
+        id={elem._id}
+        name={elem.name}
+        price={elem.price}
+        image={elem.image_mobile}
+        index={i}
+    />))
+    return (
+        <>
+            {setIngr}
+        </>
+    );
 }
 
 
-function Ingredient({ id, name, price, image, index, elemKey }) {
+const Ingredient: FunctionComponent<{ className: any, id: string, name: string, price: number, image: string, index: number, elemKey: TIngredient }> = ({ id, name, price, image, index, elemKey }) => {
     const dispatch = useDispatch();
     const totalCard = useSelector((state) => state.apiList);
-    const orderWasCreated = useSelector(state => state.createdOrder.orderBase)
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
-
-
     useEffect(() => {
-        dispatch(count(mainIngredients, elemKey, totalCard, orderWasCreated));
+        dispatch(count(mainIngredients, elemKey, totalCard));
     }, [mainIngredients, bun, deleteCard, switchCard]);
+    useEffect(() => {
+    }, [totalCard, deleteCard]);
 
-    const ref = useRef(null);
-
+    const ref = useRef<HTMLInputElement>(null);
     const [, dropRef] = useDrop({
         accept: itemTypes.constructor,
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
-        hover: (item, monitor) => {
+        hover: (item: { index: number }, monitor) => {
             if (!ref.current) {
-
                 return;
             }
             const dragIndex = item.index;
             const hoverIndex = index;
             if (dragIndex === hoverIndex) {
-
                 return;
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const clientOffset = monitor.getClientOffset();
+            const clientOffset: any = monitor.getClientOffset();
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-
                 return;
             }
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
@@ -94,6 +93,7 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
             item.index = hoverIndex;
         },
     });
+
     const [{ isDragging }, dragRef] = useDrag({
         type: itemTypes.constructor,
         item: () => {
@@ -118,31 +118,18 @@ function Ingredient({ id, name, price, image, index, elemKey }) {
                 price={price}
                 thumbnail={image}
                 handleClose={() => {
-                    dispatch(deleteCard(mainIngredients, id, elemKey, totalCard));
+                    dispatch(deleteCard(mainIngredients, elemKey, totalCard));
                 }}
             />
         </div>
-
-
     );
 }
-/*проверка типов*/
-Ingredient.propTypes = {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    index: PropTypes.number,
-};
-/********** */
 
 export default function BurgerConstructor() {
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
-
     const dispatch = useDispatch();
-
     const [, dropIngredient] = useDrop({
         accept: itemTypes.ingredient,
         collect: (monitor) => ({
@@ -153,27 +140,31 @@ export default function BurgerConstructor() {
         },
     });
 
-    const total = useSelector(state => state.apiList.burgerData)
+    //const total = useSelector((state: RootState) => state.apiList.burgerData)
+
     useEffect(() => {
-        dispatch(countPrice(mainIngredients, bun));
+        if (bun)
+            dispatch(countPrice(mainIngredients, bun));
 
     }, [mainIngredients, bun]);
 
     const totalPrice = useSelector((state) => state.price.totalPrice);
-    let infoToSend = null
-    bun.type ? infoToSend = mainIngredients
-        .map((elem) => elem._id)
-        .concat(bun._id, bun._id) : infoToSend = null
-
-
+    //let infoToSend = null
+    let infoToSend: null | Array<string> = null
+    if (bun) {
+        //console.log(bun);
+        bun.type ? infoToSend = mainIngredients
+            .map((elem: { _id: string }) => elem._id)
+            .concat(bun._id, bun._id) : infoToSend = null
+    }
 
     return (
         <>
 
-            <ul className={burgerConstructorStyles.burger_constructor__main_list} ref={dropIngredient}>
+            <ul className={burgerConstructorStyles.burger_constructor__main_list} ref={dropIngredient} >
 
                 {/* верх бургера (заблочен для сдвига) */}
-                {bun.type &&
+                {bun &&
                     <li className={burgerConstructorStyles.burger_constructor__main_list_item} key={bun.keyAdd}>
                         <ConstructorElement
                             type='top'
@@ -187,7 +178,7 @@ export default function BurgerConstructor() {
 
 
                 {/*пока нет ингредиентов*/}
-                {!bun.type && mainIngredients.length === 0 &&
+                {!bun && mainIngredients.length === 0 &&
                     <div >
                         <p className={burgerConstructorStyles.burger_constructor__noingr_space + 'text text_type_main-medium'}>
                             Перетащите сюда ингредиенты
@@ -198,7 +189,7 @@ export default function BurgerConstructor() {
 
                 {/*то, что со скроллом*/}
 
-                {mainIngredients.length === 0 && bun.type &&
+                {mainIngredients.length === 0 && bun &&
                     <div className={burgerConstructorStyles.burger_constructor__noingr_space_other}>
                         <p className='text text_type_main-medium'>
                             <span className='text_color_inactive'>
@@ -219,10 +210,8 @@ export default function BurgerConstructor() {
                 </li>
                 {/************************************************************************************** */}
 
-
-
                 {/* низ бургера (заблочен для сдвига) */}
-                {bun.type &&
+                {bun &&
                     <li className={burgerConstructorStyles.burger_constructor__main_list_item} key="bottom_bun">
                         <ConstructorElement
                             isLocked={true}
@@ -243,16 +232,15 @@ export default function BurgerConstructor() {
                 <span className='ml-2 mr-10'>
                     <CurrencyIcon type="primary" />
                 </span>
-                {!bun.type && <Button type="primary"
+                {!bun && <Button type="primary"
                     size="medium">Добавьте булки!</Button>}
-                {bun.type &&
+                {bun &&
                     <Button
                         type="primary"
                         size="medium"
-                        onClick={() => dispatch(openModalOrder(infoToSend), cleanCounter(total))}>
+                        onClick={() => dispatch(openModalOrder(infoToSend))}>
                         Оформить заказ
                     </Button>}
-
             </div>
         </>
     );

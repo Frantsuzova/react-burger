@@ -21,19 +21,47 @@ import {
     CONSTRUCTOR_CLEAN,
 } from "../actions/index";
 
-const initialIngredients = {
+
+import { TIndexActions } from '../actions/index'
+/************************************************ */
+
+import { TIngredient, TOrderSend, TModalData } from '../types/types'
+
+type TinitialIngredientsApi = {
+    hasError: boolean;
+    error: null | object;
+    isLoading: boolean;
+    burgerData: null | Array<TIngredient>
+}
+
+export const initialIngredientsApi: TinitialIngredientsApi = {
     hasError: false,
     error: null,
     isLoading: false,
     burgerData: null,
 };
 
-const initialIngredientsConstructorList = {
-    bun: [],
+
+type TinitialIngredientsConstructorList = {
+    bun: TIngredient | null
+    mainIngredients: Array<TIngredient>;
+}
+
+export const initialIngredientsConstructorList: TinitialIngredientsConstructorList = {
+    bun: null,
     mainIngredients: [],
 };
 
-const initialCurrentIngredient = {
+type TinitialCurrentIngredient = {
+    name: string;
+    image: null | string;
+    calories: null | number;
+    proteins: null | number;
+    fat: null | number;
+    carbohydrates: null | number;
+}
+
+export const initialCurrentIngredient: TinitialCurrentIngredient = {
     name: "",
     image: null,
     calories: null,
@@ -42,31 +70,65 @@ const initialCurrentIngredient = {
     carbohydrates: null,
 };
 
-const initialPopup = {
+type TinitialOrder = {
+    hasError: boolean;
+    error: null | object;
+    isLoading: boolean;
+    orderInfo: null | TOrderSend;
+    success: boolean;
+}
+export const initialOrder: TinitialOrder = {
+    hasError: false,
+    error: null,
+    isLoading: false,
+    orderInfo: null,
+    success: false,
+};
+type TinitialTab = {
+    currentTab: string;
+}
+export const initialTab: TinitialTab = {
+    currentTab: "bun",
+};
+type TinitialPrice = {
+    totalPrice: null | number;
+}
+export const initialPrice: TinitialPrice = {
+    totalPrice: null,
+};
+
+type TinitialCurrentOrder = {
+    number: null | number;
+    name: string;
+    status: string;
+    ingredients: Array<object>;
+    createdAt: string;
+}
+
+export const initialCurrentOrder: TinitialCurrentOrder = {
+    number: null,
+    name: "",
+    status: "",
+    ingredients: [],
+    createdAt: "",
+};
+
+type TinitialModal = {
+    ingridientModal: boolean;
+    orderModal: boolean;
+    isLoading: boolean;
+    allClose: boolean;
+}
+export const initialModal: TinitialModal = {
+    isLoading: false,
     ingridientModal: false,
     orderModal: false,
     allClose: true,
 };
 
-const initialOrder = {
-    hasError: false,
-    error: null,
-    isLoading: false,
-    orderInfo: null,
-    orderBase: [],
-    success: false
-}
+/**************************************************************** */
 
-const initialTab = {
-    currentTab: 'bun'
-}
-
-const initialPrice = {
-    totalPrice: null
-}
-
-
-const ingredientsList = (state = initialIngredients, action) => {
+export const ingredientsApiList = (state = initialIngredientsApi, action: TIndexActions): TinitialIngredientsApi => {
     switch (action.type) {
         case GET_INGREDIENTS_API_REQUEST: {
             return {
@@ -94,9 +156,8 @@ const ingredientsList = (state = initialIngredients, action) => {
         case COUNT_CARD: {
             return {
                 ...state,
-                burgerData: action.value
-
-            }
+                burgerData: action.value,
+            };
         }
         default: {
             return state;
@@ -104,10 +165,10 @@ const ingredientsList = (state = initialIngredients, action) => {
     }
 };
 
-const ingredientsConstructorList = (
+export const ingredientsConstructorList = (
     state = initialIngredientsConstructorList,
-    action
-) => {
+    action: TIndexActions
+): TinitialIngredientsConstructorList => {
     switch (action.type) {
         case CONSTRUCTOR_BUN: {
             return {
@@ -124,15 +185,15 @@ const ingredientsConstructorList = (
         case CONSTRUCTOR_CARD_CHANGE: {
             return {
                 ...state,
-                mainIngredients: action.value
-            }
+                mainIngredients: action.value,
+            };
         }
         case CONSTRUCTOR_CLEAN: {
             return {
                 ...state,
                 mainIngredients: initialIngredientsConstructorList.mainIngredients,
-                bun: initialIngredientsConstructorList.bun
-            }
+                bun: initialIngredientsConstructorList.bun,
+            };
         }
         default: {
             return state;
@@ -140,8 +201,7 @@ const ingredientsConstructorList = (
     }
 };
 
-
-const currentIngredient = (state = initialCurrentIngredient, action) => {
+export const currentIngredient = (state = initialCurrentIngredient, action: TIndexActions): TinitialCurrentIngredient => {
     switch (action.type) {
         case WRITE_CURRENT_INGREDIENT: {
             return {
@@ -152,24 +212,28 @@ const currentIngredient = (state = initialCurrentIngredient, action) => {
                 proteins: action.proteins,
                 fat: action.fat,
                 carbohydrates: action.carbohydrates,
-
-
             };
         }
+
         case DELETE_CURRENT_INGREDIENT: {
             return {
                 ...state,
-                initialCurrentIngredient
-            }
+                name: "",
+                image: null,
+                calories: null,
+                proteins: null,
+                fat: null,
+                carbohydrates: null,
+            };
         }
 
         default: {
             return state;
         }
     }
-}
+};
 
-const modalInfo = (state = initialPopup, action) => {
+export const modalInfo = (state = initialModal, action: TIndexActions): TinitialModal => {
     switch (action.type) {
         case MODAL_INGRIDIENT_OPEN: {
             return {
@@ -177,8 +241,6 @@ const modalInfo = (state = initialPopup, action) => {
                 ingridientModal: action.open,
                 orderModal: false,
                 allClose: false,
-                orderModalError: false,
-
             };
         }
         case MODAL_ORDER_OPEN: {
@@ -186,61 +248,22 @@ const modalInfo = (state = initialPopup, action) => {
                 ...state,
                 orderModal: action.open,
                 ingridientModal: false,
-                orderModalError: false,
-                allClose: false
-
+                allClose: false,
             };
         }
         case MODAL_ORDER_ERROR: {
             return {
                 ...state,
-                orderModalError: action.open,
                 ingridientModal: false,
                 allClose: false,
-            }
+            };
         }
         case MODAL_CLOSE: {
             return {
                 ...state,
                 ingridientModal: false,
                 orderModal: false,
-                orderModalError: false,
                 allClose: true
-            }
-        }
-        default: {
-            return state;
-        }
-    }
-}
-
-const createdOrder = (state = initialOrder, action) => {
-    switch (action.type) {
-        case SEND_ORDER_REQUEST: {
-            return {
-                ...state,
-                isLoading: true
-            }
-        }
-        case SEND_ORDER_SUCCESS: {
-            return {
-                ...state,
-                isLoading: false,
-                success: true,
-                hasError: false,
-                orderInfo: action.data,
-                orderBase: state.orderBase.concat(action.data)
-
-
-            }
-        }
-        case SEND_ORDER_FAILED: {
-            return {
-                ...state,
-                isLoading: false,
-                hasError: true,
-                error: action.error,
-                orderInfo: null
             }
         }
         default: {
@@ -249,40 +272,67 @@ const createdOrder = (state = initialOrder, action) => {
     }
 };
 
+export const createdOrder = (state = initialOrder, action: TIndexActions): TinitialOrder => {
+    switch (action.type) {
+        case SEND_ORDER_REQUEST: {
+            return {
+                ...state,
+                isLoading: true,
+            };
+        }
+        case SEND_ORDER_SUCCESS: {
+            return {
+                ...state,
+                isLoading: false,
+                success: true,
+                hasError: false,
+                orderInfo: action.data,
+            };
+        }
+        case SEND_ORDER_FAILED: {
+            return {
+                ...state,
+                isLoading: false,
+                hasError: true,
+                error: action.error,
+                orderInfo: null,
+            };
+        }
+        default: {
+            return state;
+        }
+    }
+};
 
-const tabSwtich = (state = initialTab, action) => {
+export const tabSwtich = (state = initialTab, action: TIndexActions): TinitialTab => {
     switch (action.type) {
         case TAB_SWITCH: {
             return {
                 ...state,
-                currentTab: action.value
-            }
+                currentTab: action.value,
+            };
         }
         default: {
             return state;
         }
     }
-}
-const totalPrice = (state = initialPrice, action) => {
+};
+export const totalPrice = (state = initialPrice, action: TIndexActions): TinitialPrice => {
     switch (action.type) {
         case COUNT_TOTAL_PRICE: {
             return {
                 ...state,
-                totalPrice: action.value
-            }
+                totalPrice: action.value,
+            };
         }
         default: {
             return state;
         }
     }
-}
-
-
-
-
+};
 
 export const rootReducer = combineReducers({
-    apiList: ingredientsList,
+    apiList: ingredientsApiList,
     constructorList: ingredientsConstructorList,
     modalInfo: modalInfo,
     currentIngredient: currentIngredient,
@@ -290,3 +340,5 @@ export const rootReducer = combineReducers({
     tabSwtich: tabSwtich,
     price: totalPrice,
 });
+
+export type RootState = ReturnType<typeof rootReducer>

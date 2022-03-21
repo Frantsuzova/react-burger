@@ -1,6 +1,6 @@
 import appHeaderStyles from './app-header.module.css';
 // компонент
-import MenuItem from '../menu-item/menu-item.jsx';
+import MenuItem from '../menu-item/menu-item';
 // компоненты от яндекса
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 

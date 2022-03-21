@@ -1,19 +1,22 @@
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 // компонент
-import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ingredients-category.jsx';
+import BurgerIngredientsCategory from '../burger-ingredients-category/burger-ingredients-category';
 // компонент от яндекса
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 //
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../services/hooks';
 import { switchTab } from "../../services/actions";
 import { useRef, useEffect } from "react";
+import { RootState } from '../../services/reducers/index';
+
 
 function MainTab() {
     const dispatch = useDispatch();
     const current = useSelector((state) => state.tabSwtich.currentTab);
 
-    const toSwitchTab = (e) => {
+    const toSwitchTab = (e: string) => {
         dispatch(switchTab(e));
         const element = document.getElementById(e);
         if (element) {
@@ -50,8 +53,8 @@ function MainTab() {
 
 export default function BurgerIngredients() {
     const dispatch = useDispatch();
-    const scrollRef = useRef();
-    const ingredientsScroll = (e) => {
+    const scrollRef: any = useRef(null);
+    const ingredientsScroll = (e: any) => {
         const bun = e.target.childNodes[0].offsetHeight;
         const sauce = e.target.childNodes[1].clientHeight;
 
@@ -67,24 +70,8 @@ export default function BurgerIngredients() {
         if (scrollRef.current.scrollTop >= bun + sauce) {
             dispatch(switchTab("main"));
         }
+
     };
-    useEffect(() => {
-
-        if (scrollRef && scrollRef.current) {
-            scrollRef.current.addEventListener("scroll", (e) => {
-                ingredientsScroll(e);
-            });
-        }
-
-        return () => {
-            scrollRef.current.removeEventListener("scroll", (e) => {
-                ingredientsScroll(e);
-            });
-        };
-
-
-    }, []);
-
 
     return (
         <>

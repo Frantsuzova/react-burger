@@ -1,4 +1,5 @@
 const dataUrl = 'https://norma.nomoreparties.space/api';
+/*
 const myData = [
     {
         "_id": "60666c42cc7b410027a1a9b1",
@@ -211,5 +212,5 @@ const myData = [
         "__v": 1
     }
 ]
-
-export { dataUrl, myData };
+*/
+export { dataUrl };
