@@ -1,0 +1,31 @@
+.mainbox {
+    display: grid;
+    min-width: 480px;
+    align-items: center;
+    justify-items: center;
+    margin-top: 20vh;
+
+}
+
+.header {
+    margin: 0;
+}
+
+.input {
+    /* сверху | справа | снизу | слева */
+    margin: 24px 0 24px 0;
+}
+
+.button {
+    margin-bottom: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.link {
+    color: #4C4CFF;
+    text-decoration: none;
+    color: #4C4CFF;
+
+}

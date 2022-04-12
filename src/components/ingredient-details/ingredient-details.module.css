@@ -22,3 +22,25 @@
     flex-direction: column;
     align-items: center;
 }
+
+.headerTextNoModal {
+    margin-top: 20vh;
+}
+
+.image {
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modalDetails {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+
+}
+
+.modalDetailsText {
+    display: block;
+}

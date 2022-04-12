@@ -16,7 +16,14 @@
 
 }
 
+.modalBody {
+
+    display: flex;
+    flex-direction: column;
+}
+
 .modal__close_icon {
+    background-image: url(../../images/close.svg);
     position: absolute;
     top: 50px;
     right: 43px;
@@ -24,4 +31,5 @@
     z-index: 1;
     width: 18px;
     height: 18px;
+
 }

@@ -1,9 +1,6 @@
-import check from "../../images/done.svg"
-import styles from "./order-details.module.css"
-//import { useSelector } from 'react-redux';
+import check from "../../images/done.svg";
+import styles from "./order-details.module.css";
 import { useSelector } from '../../services/hooks';
-import { RootState } from '../../services/reducers/index';
-
 
 
 export default function OrderDetails() {

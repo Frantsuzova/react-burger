@@ -1,35 +1,45 @@
-import { dataUrl } from '../../utils/data';
-import { Dispatch } from 'redux';
 import { TIngredient, TOrderSend, TModalData, Ielem, IElemInconstructor, IIngredientElem, newObj } from '../types/types'
-import { AppDispatch } from '../hooks';
+import { Dispatch } from 'redux';
+import { instance } from "./axios";
 import { v4 as uuidv4 } from 'uuid';
+
 export const GET_INGREDIENTS_API_REQUEST: 'GET_INGREDIENTS_API_REQUEST' = "GET_INGREDIENTS_API_REQUEST";
 export const GET_INGREDIENTS_API_SUCCESS: 'GET_INGREDIENTS_API_SUCCESS' = "GET_INGREDIENTS_API_SUCCESS";
 export const GET_INGREDIENTS_API_FAILED: 'GET_INGREDIENTS_API_FAILED' = "GET_INGREDIENTS_API_FAILED";
+
 export const SEND_ORDER_REQUEST: 'SEND_ORDER_REQUEST' = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCESS: 'SEND_ORDER_SUCCESS' = "SEND_ORDER_SUCCESS";
 export const SEND_ORDER_FAILED: 'SEND_ORDER_FAILED' = "SEND_ORDER_FAILED";
+
 export const CONSTRUCTOR_BUN: 'CONSTRUCTOR_BUN' = "CONSTRUCTOR_BUN";
+
 export const CONSTRUCTOR_MAIN_INGREDIENTS: 'CONSTRUCTOR_MAIN_INGREDIENTS' = "CONSTRUCTOR_MAIN_INGREDIENTS";
+
 export const MODAL_INGRIDIENT_OPEN: 'MODAL_INGRIDIENT_OPEN' = "MODAL_INGRIDIENT_OPEN";
 export const MODAL_ORDER_OPEN: 'MODAL_ORDER_OPEN' = "MODAL_ORDER_OPEN";
 export const MODAL_CLOSE: 'MODAL_CLOSE' = "MODAL_CLOSE";
 export const MODAL_ORDER_ERROR: 'MODAL_ORDER_ERROR' = "MODAL_ORDER_ERROR";
 export const MODAL_ORDER_DETAIL_OPEN: 'MODAL_ORDER_DETAIL_OPEN' = "MODAL_ORDER_DETAIL_OPEN";
+
 export const WRITE_CURRENT_INGREDIENT: 'WRITE_CURRENT_INGREDIENT' = "WRITE_CURRENT_INGREDIENT";
 export const DELETE_CURRENT_INGREDIENT: 'DELETE_CURRENT_INGREDIENT' = "DELETE_CURRENT_INGREDIENT";
+
 export const TAB_SWITCH: 'TAB_SWITCH' = "TAB_SWITCH";
+
 export const CONSTRUCTOR_CARD_CHANGE: 'CONSTRUCTOR_CARD_CHANGE' = "CONSTRUCTOR_CARD_CHANGE";
 export const CONSTRUCTOR_CLEAN: 'CONSTRUCTOR_CLEAN' = "CONSTRUCTOR_CLEAN";
+
 export const COUNT_TOTAL_PRICE: 'COUNT_TOTAL_PRICE' = "COUNT_TOTAL_PRICE";
+
 export const COUNT_CARD: 'COUNT_CARD' = "COUNT_CARD";
+
 export const WRITE_CURRENT_ORDER_DETAIL: 'WRITE_CURRENT_ORDER_DETAIL' = "WRITE_CURRENT_ORDER_DETAIL";
 export const DELETE_CURRENT_ORDER_DETAIL: 'DELETE_CURRENT_ORDER_DETAIL' = "DELETE_CURRENT_ORDER_DETAIL";
+
 export const GET_INFO_ONE_ORDER_REQUEST: 'GET_INFO_ONE_ORDER_REQUEST' = "GET_INFO_ONE_ORDER_REQUEST";
 export const GET_INFO_ONE_ORDER_SUCCESS: 'GET_INFO_ONE_ORDER_SUCCESS' = "GET_INFO_ONE_ORDER_SUCCESS";
 export const GET_INFO_ONE_ORDER_ERROR: 'GET_INFO_ONE_ORDER_ERROR' = "GET_INFO_ONE_ORDER_ERROR";
 
-//------------------------
 export interface IGetIngredientsApiRequest {
     readonly type: typeof GET_INGREDIENTS_API_REQUEST;
 }
@@ -78,12 +88,11 @@ export interface IModalOpenOrder {
     readonly type: typeof MODAL_ORDER_OPEN;
     readonly open: boolean
 }
-/**************************** */
+
 export interface IModalOpenOrderDetail {
     readonly type: typeof MODAL_ORDER_DETAIL_OPEN;
     readonly open: boolean
 }
-
 
 export interface IModalOpenError {
     readonly type: typeof MODAL_ORDER_ERROR;
@@ -150,18 +159,16 @@ export interface IGetIngoOneOrderRequest {
     readonly type: typeof GET_INFO_ONE_ORDER_REQUEST;
 }
 
-/***************************** */
 export interface IGetIngoOneOrderSuccess {
     readonly type: typeof GET_INFO_ONE_ORDER_SUCCESS;
     readonly value: TModalData
 }
 
-
 export interface IGetIngoOneOrderError {
     readonly type: typeof GET_INFO_ONE_ORDER_ERROR;
     readonly value: object
 }
-//------------------------
+
 export type TIndexActions =
     | IGetIngoOneOrderError
     | IGetIngoOneOrderSuccess
@@ -188,21 +195,18 @@ export type TIndexActions =
     | IGetIngredientsApiFailed
     | IGetIngredientsApiSuccess
     | IGetIngredientsApiRequest;
-/*************************************************************** */
-export function getIngredients(url: string) {
-
-    return async function (dispatch: AppDispatch) {
 
 
-        dispatch({
-            type: GET_INGREDIENTS_API_REQUEST,
-        });
-
+export function getIngredients() {
+    return async function (dispatch: Dispatch<TIndexActions>) {
         try {
-            const res = await fetch(url);
-            if (res.ok) {
-                const result = await res.json();
-                const last = result.data.map((elem: Ielem) => {
+            const res = await instance.get("ingredients");
+            dispatch({
+                type: GET_INGREDIENTS_API_REQUEST,
+            });
+            if (res.status === 200) {
+                const { data } = res.data;
+                const last = data.map((elem: Ielem) => {
                     elem.keyAdd = 0;
                     elem.key = elem._id;
                     elem.counter = 0;
@@ -219,7 +223,6 @@ export function getIngredients(url: string) {
                 error: error,
             });
         }
-
     };
 }
 
@@ -228,7 +231,7 @@ export function getConstructorIngredients(data: Array<TIngredient>) {
         if (elem.type === "bun") { return elem }
         else return null
     }) || null;
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: CONSTRUCTOR_BUN,
             bun: bun,
@@ -245,7 +248,7 @@ export function getConstructorIngredients(data: Array<TIngredient>) {
 }
 
 export function currentIngredient(elem: IIngredientElem) {
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: WRITE_CURRENT_INGREDIENT,
             name: elem.name,
@@ -262,26 +265,21 @@ export function currentIngredient(elem: IIngredientElem) {
     };
 }
 
-export function sendOrder(data: Array<object>) {
-    return async function (dispatch: AppDispatch) {
-        dispatch({
-            type: SEND_ORDER_REQUEST,
-        });
-        const requestOption = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                ingredients: data,
-            }),
-        };
+
+export function sendOrderAxios(data: Array<object>) {
+    return async function (dispatch: Dispatch<TIndexActions>) {
         try {
-            const res = await fetch(`${dataUrl}/orders`, requestOption);
-            if (res.ok) {
-                const result = await res.json();
-                const last = await result;
+            dispatch({
+                type: SEND_ORDER_REQUEST,
+            });
+            const res = await instance.post("orders", {
+                ingredients: data,
+            });
+            if (res.status === 200) {
+                const { data } = res;
                 dispatch({
                     type: SEND_ORDER_SUCCESS,
-                    data: last,
+                    data: data,
                 });
             }
         } catch (error: any) {
@@ -290,12 +288,11 @@ export function sendOrder(data: Array<object>) {
                 error: error,
             });
         }
-
     };
 }
 
 export function switchTab(e: string) {
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: TAB_SWITCH,
             value: e,
@@ -308,7 +305,7 @@ export function switchCard(dragIndex: number, hoverIndex: number, ingredients: A
     const dragIngredient = newIngredients[dragIndex];
     newIngredients.splice(dragIndex, 1);
     newIngredients.splice(hoverIndex, 0, dragIngredient);
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: "CONSTRUCTOR_CARD_CHANGE",
             value: newIngredients,
@@ -316,11 +313,11 @@ export function switchCard(dragIndex: number, hoverIndex: number, ingredients: A
     };
 }
 
+
 export function deleteCard(mainIngredients: Array<TIngredient>, elemKey: TIngredient, totalCard: any) {
-    return function (dispatch: AppDispatch) {
-        console.log(totalCard)
+    return function (dispatch: Dispatch<TIndexActions>) {
         const filtered = mainIngredients.filter((elem) => {
-            elem.counter--;
+            elem.keyAdd--;
             return elem !== elemKey;
         });
 
@@ -355,13 +352,13 @@ export function countPrice(mainIngredients: Array<TIngredient>, bun: TIngredient
     }
     if (mainIngredients.length > 0) {
         mainPrice = mainIngredients
-            .map((elem: any) => elem.price)
-            .reduce((a: any, b: any) => a + b, 0);
+            .map((elem) => elem.price)
+            .reduce((a, b) => a + b, 0);
     }
     if (mainIngredients.length === 0) {
         mainPrice = 0;
     }
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: COUNT_TOTAL_PRICE,
             value: bunPrice + mainPrice,
@@ -379,7 +376,7 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
     let newMainIngredients = [...mainIngredients];
     let newElem: any = {};
     if (elem.item)
-        return function (dispatch: AppDispatch) {
+        return function (dispatch: Dispatch<TIndexActions>) {
             if (elem.item.type === "bun" && elem.item !== bun) {
                 elem.item.keyAdd = uuidv4();
                 elem.item.counter = 2;
@@ -436,7 +433,7 @@ export function count(mainIngredients: Array<TIngredient>, elemKey: { _id: strin
     exact.counter = counted;
     newTotal.splice(filtered, 1, exact);
 
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: COUNT_CARD,
             value: totalCard.burgerData,
@@ -445,7 +442,7 @@ export function count(mainIngredients: Array<TIngredient>, elemKey: { _id: strin
 }
 
 export function closeModal() {
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: MODAL_CLOSE,
         });
@@ -461,7 +458,7 @@ export function openModalOrder(infoToSend: any) {
             dispatch({
                 type: CONSTRUCTOR_CLEAN,
             });
-            dispatch(sendOrder(infoToSend));
+            dispatch(sendOrderAxios(infoToSend));
             dispatch({
                 type: MODAL_ORDER_OPEN,
                 open: true,
@@ -476,34 +473,17 @@ export function openModalOrder(infoToSend: any) {
     };
 }
 
+
+
 export function cleanCounter(total: any) {
     const result = total.map((elem: { counter: number }) => {
         elem.counter = 0;
         return elem;
     });
-    return function (dispatch: AppDispatch) {
+    return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
             type: COUNT_CARD,
             value: result,
-        });
-    };
-}
-
-
-
-export function currentOrder(elem: { number: number, name: string, status: string, ingredients: Array<object>, createdAt: string }) {
-    return function (dispatch: AppDispatch) {
-        dispatch({
-            type: WRITE_CURRENT_ORDER_DETAIL,
-            number: elem.number,
-            name: elem.name,
-            status: elem.status,
-            ingredients: elem.ingredients,
-            date: elem.createdAt,
-        });
-        dispatch({
-            type: MODAL_ORDER_DETAIL_OPEN,
-            open: true,
         });
     };
 }
@@ -544,4 +524,9 @@ export function countCostOrder(all: any, ingredients: Array<object>) {
             .reduce((a, b) => a + b, 0);
 
     return result;
+}
+
+
+export type TindexActions = {
+
 }

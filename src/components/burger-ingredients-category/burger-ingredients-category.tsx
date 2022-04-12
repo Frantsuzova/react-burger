@@ -5,13 +5,14 @@ import { FunctionComponent } from "react";
 import { useSelector } from '../../services/hooks';
 //import { useSelector } from "react-redux";
 import { TIngredient } from '../../services/types/types';
-import { RootState } from '../../services/reducers/index';
+import { Link, useLocation } from "react-router-dom";
+//import { RootState } from '../../services/reducers/index';
 
 
 /************************************************************* */
 
-//function Cards({ type }) {
 const Cards: FunctionComponent<{ type: string }> = ({ type }) => {
+    const location = useLocation();
     const info = useSelector((state) => state.apiList.burgerData);
     if (info)
         return (
@@ -21,10 +22,20 @@ const Cards: FunctionComponent<{ type: string }> = ({ type }) => {
 
                     if (elem.type === type) {
                         return (
-                            <BurgerIngredientsCard
-                                index={i}
-                                elem={elem}
-                                key={elem._id} />
+                            <Link
+                                to={{
+                                    pathname: `/ingredients/${elem._id}`,
+                                    state: { background: location },
+                                }}
+                                key={elem._id} className={burgerIngredientsCategoryStyles.link}>
+
+                                <BurgerIngredientsCard
+                                    index={i}
+                                    elem={elem}
+                                    key={elem._id}
+
+                                />
+                            </Link>
                         );
                     }
                 })}

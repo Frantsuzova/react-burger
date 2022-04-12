@@ -1,4 +1,6 @@
 import { combineReducers } from "redux";
+import { TIndexActions } from '../actions/index';
+import { TIngredient, TModalData, TOrderSend } from '../types/types';
 import {
     GET_INGREDIENTS_API_REQUEST,
     GET_INGREDIENTS_API_SUCCESS,
@@ -19,13 +21,19 @@ import {
     COUNT_TOTAL_PRICE,
     COUNT_CARD,
     CONSTRUCTOR_CLEAN,
+    MODAL_ORDER_DETAIL_OPEN,
+    WRITE_CURRENT_ORDER_DETAIL,
+    DELETE_CURRENT_ORDER_DETAIL,
+    GET_INFO_ONE_ORDER_REQUEST,
+    GET_INFO_ONE_ORDER_SUCCESS,
+    GET_INFO_ONE_ORDER_ERROR,
 } from "../actions/index";
 
-
-import { TIndexActions } from '../actions/index'
-/************************************************ */
-
-import { TIngredient, TOrderSend, TModalData } from '../types/types'
+import {
+    userRegistrationInfo,
+    userInfo,
+    forgotRequest,
+} from "./auth";
 
 type TinitialIngredientsApi = {
     hasError: boolean;
@@ -40,7 +48,6 @@ export const initialIngredientsApi: TinitialIngredientsApi = {
     isLoading: false,
     burgerData: null,
 };
-
 
 type TinitialIngredientsConstructorList = {
     bun: TIngredient | null
@@ -69,7 +76,28 @@ export const initialCurrentIngredient: TinitialCurrentIngredient = {
     fat: null,
     carbohydrates: null,
 };
-
+type TinitialModal = {
+    ingridientModal: boolean;
+    orderModal: boolean;
+    detailOrderInfo: boolean;
+    allClose: boolean;
+    data: null | TModalData
+    isLoading: boolean;
+    error: null | object;
+    hasError: boolean;
+    modalError: boolean;
+}
+export const initialModal: TinitialModal = {
+    ingridientModal: false,
+    orderModal: false,
+    detailOrderInfo: false,
+    allClose: true,
+    data: null,
+    isLoading: false,
+    error: null,
+    hasError: false,
+    modalError: false,
+};
 type TinitialOrder = {
     hasError: boolean;
     error: null | object;
@@ -104,7 +132,6 @@ type TinitialCurrentOrder = {
     ingredients: Array<object>;
     createdAt: string;
 }
-
 export const initialCurrentOrder: TinitialCurrentOrder = {
     number: null,
     name: "",
@@ -112,21 +139,6 @@ export const initialCurrentOrder: TinitialCurrentOrder = {
     ingredients: [],
     createdAt: "",
 };
-
-type TinitialModal = {
-    ingridientModal: boolean;
-    orderModal: boolean;
-    isLoading: boolean;
-    allClose: boolean;
-}
-export const initialModal: TinitialModal = {
-    isLoading: false,
-    ingridientModal: false,
-    orderModal: false,
-    allClose: true,
-};
-
-/**************************************************************** */
 
 export const ingredientsApiList = (state = initialIngredientsApi, action: TIndexActions): TinitialIngredientsApi => {
     switch (action.type) {
@@ -214,7 +226,6 @@ export const currentIngredient = (state = initialCurrentIngredient, action: TInd
                 carbohydrates: action.carbohydrates,
             };
         }
-
         case DELETE_CURRENT_INGREDIENT: {
             return {
                 ...state,
@@ -233,6 +244,35 @@ export const currentIngredient = (state = initialCurrentIngredient, action: TInd
     }
 };
 
+export const currentOrderDetail = (state = initialCurrentOrder, action: TIndexActions): TinitialCurrentOrder => {
+    switch (action.type) {
+        case WRITE_CURRENT_ORDER_DETAIL: {
+            return {
+                ...state,
+                number: action.number,
+                name: action.name,
+                status: action.status,
+                ingredients: action.ingredients,
+                createdAt: action.date,
+            };
+        }
+        case DELETE_CURRENT_ORDER_DETAIL: {
+            return {
+                ...state,
+                number: null,
+                name: "",
+                status: "",
+                ingredients: [],
+                createdAt: "",
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
 export const modalInfo = (state = initialModal, action: TIndexActions): TinitialModal => {
     switch (action.type) {
         case MODAL_INGRIDIENT_OPEN: {
@@ -241,6 +281,7 @@ export const modalInfo = (state = initialModal, action: TIndexActions): Tinitial
                 ingridientModal: action.open,
                 orderModal: false,
                 allClose: false,
+                modalError: false,
             };
         }
         case MODAL_ORDER_OPEN: {
@@ -248,12 +289,24 @@ export const modalInfo = (state = initialModal, action: TIndexActions): Tinitial
                 ...state,
                 orderModal: action.open,
                 ingridientModal: false,
+                modalError: false,
+                allClose: false,
+            };
+        }
+        case MODAL_ORDER_DETAIL_OPEN: {
+            return {
+                ...state,
+                orderModal: false,
+                ingridientModal: false,
+                modalError: false,
+                detailOrderInfo: action.open,
                 allClose: false,
             };
         }
         case MODAL_ORDER_ERROR: {
             return {
                 ...state,
+                modalError: action.open,
                 ingridientModal: false,
                 allClose: false,
             };
@@ -263,8 +316,32 @@ export const modalInfo = (state = initialModal, action: TIndexActions): Tinitial
                 ...state,
                 ingridientModal: false,
                 orderModal: false,
-                allClose: true
-            }
+                modalError: false,
+                detailOrderInfo: false,
+                allClose: true,
+            };
+        }
+        case GET_INFO_ONE_ORDER_REQUEST: {
+            return {
+                ...state,
+                isLoading: true,
+            };
+        }
+        case GET_INFO_ONE_ORDER_SUCCESS: {
+            return {
+                ...state,
+                data: action.value,
+                hasError: false,
+                isLoading: false,
+            };
+        }
+        case GET_INFO_ONE_ORDER_ERROR: {
+            return {
+                ...state,
+                hasError: true,
+                isLoading: false,
+                error: action.value,
+            };
         }
         default: {
             return state;
@@ -339,6 +416,8 @@ export const rootReducer = combineReducers({
     createdOrder: createdOrder,
     tabSwtich: tabSwtich,
     price: totalPrice,
+    registration: userRegistrationInfo,
+    userInfo: userInfo,
+    forgotRequest: forgotRequest,
+    currentOrderDetail: currentOrderDetail,
 });
-
-export type RootState = ReturnType<typeof rootReducer>

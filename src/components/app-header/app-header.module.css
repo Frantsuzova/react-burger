@@ -9,6 +9,23 @@
         0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
+.link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.activelink:nth-child(n) span {
+    color: #fff;
+}
+
+.activelink:nth-child(n) svg {
+    fill: #fff;
+}
+
 .appheader__menu_list {
     max-width: 1059px;
     display: flex;
@@ -21,6 +38,7 @@
 }
 
 .appheader__menu_item_left {
+
     margin: 0;
     padding: 0 49px 0 0;
 }
@@ -33,4 +51,11 @@
 .appheader__menu_item_right {
     margin: 0;
     padding: 0;
+}
+
+.linkbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
