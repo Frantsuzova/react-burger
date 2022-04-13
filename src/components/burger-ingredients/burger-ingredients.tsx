@@ -73,6 +73,21 @@ export default function BurgerIngredients() {
 
     };
 
+    useEffect(() => {
+        if (scrollRef && scrollRef.current) {
+            scrollRef.current.addEventListener("scroll", (e: any) => {
+                ingredientsScroll(e);
+            });
+        }
+        return () => {
+            if (scrollRef && scrollRef.current) {
+                scrollRef.current.removeEventListener("scroll", (e: any) => {
+                    ingredientsScroll(e);
+                });
+            }
+        };
+    }, []);
+
     return (
         <>
             <h1 className="text text_type_main-large mt-10">

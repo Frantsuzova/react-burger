@@ -27,7 +27,7 @@ function MainPage() {
             </DndProvider>
 
 
-            {IngredientDetails && <Modal children={<IngredientDetails />} />}
+            {/*IngredientDetails && <Modal children={<IngredientDetails />} />*/}
             {orderModal && <Modal children={<OrderDetails />} />}
 
         </main>

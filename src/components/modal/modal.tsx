@@ -5,17 +5,19 @@ import { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from '../../services/hooks';
 import { closeModal } from "../../services/actions";
 import { FunctionComponent } from "react";
-import { useHistory } from "react-router-dom";
-
+import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
 
 const modalRoot = document.getElementById("modal-root")!;
 
 const Modal: FunctionComponent<{ children: React.ReactNode }> = ({ children }) => {
+    const location = useLocation<{ background: { pathname: string } }>()
+    const { url } = useRouteMatch();
     const history = useHistory();
     const closeIngredient = () => {
         dispatch(closeModal());
-        history.replace({ pathname: "/" });
+        history.replace({ pathname: location.state ? `${location.state.background.pathname}` : `${url}` });
     };
+
     const dispatch = useDispatch();
     const { allClose } = useSelector((state) => state.modalInfo)
     const escapeClosed = useCallback(

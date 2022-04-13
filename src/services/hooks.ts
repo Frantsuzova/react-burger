@@ -26,3 +26,5 @@ export type Tlocation = Location & Idata
 interface Idata {
     background: { pathname: string | boolean }
 }
+
+

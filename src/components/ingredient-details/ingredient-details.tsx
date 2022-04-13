@@ -4,6 +4,7 @@ import { useSelector } from '../../services/hooks';
 //import { RootState } from '../../services/reducers/index';
 import React, { FunctionComponent } from "react";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 type QuizParams = {
     id: string;
 };
@@ -30,16 +31,18 @@ function IngredientDetails() {
     const { id } = useParams<QuizParams>();
     const foodList = useSelector((state) => state.apiList.burgerData);
     const exact: any = foodList!.find((elem: { _id: string }) => elem._id === id);
-    const modal = useSelector((state) => state.modalInfo.ingridientModal);
+    const location = useLocation();
+
+
     if (exact)
 
         return (
             <div className={`${styles.ingredient__container} p-10`}>
 
-                {!modal && (
-                    <p className={'text text_type_main-large'}>
-                        Детали ингредиента
-                    </p>)}
+
+                <p className={'text text_type_main-large'}>
+                    Детали ингредиента
+                </p>
 
                 <img className={`${styles.ingredient__img}`}
                     src={exact?.image_large}

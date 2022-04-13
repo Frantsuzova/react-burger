@@ -47,7 +47,6 @@ type TPath = {
 export default function App() {
     const location = useLocation<{ background: TPath }>();
     const history = useHistory();
-
     const dispatch = useDispatch();
     const { hasError, error, isLoading, burgerData } = useSelector((state) => state.apiList);
 
@@ -61,7 +60,9 @@ export default function App() {
 
 
 
-    const background = location.state && location.state.background;
+
+    const background =
+        history.action === 'PUSH' && location.state && location.state.background;
 
     return (
         <>
@@ -72,6 +73,7 @@ export default function App() {
                     <AppHeader />
 
                     <Switch location={background || location}>
+
                         <Route exact path="/" component={MainPage} />
 
                         <LoggedProtectedRoute exact path="/login">
@@ -86,6 +88,7 @@ export default function App() {
                         <LoggedProtectedResetRoute exact path="/reset-password">
                             <ResetPassword />
                         </LoggedProtectedResetRoute>
+
                         <UnloggedProtectedRoute path={`/profile`}>
                             <Profile />
                         </UnloggedProtectedRoute>
@@ -94,37 +97,40 @@ export default function App() {
                             path={`/ingredients/:id`}
                             component={IngredientDetails}
                         />
+
                         <Route exact path={`/feed/:id`} component={OrderDetails} />
                         <Route>
                             <NotFound />
                         </Route>
                     </Switch>
-
-                    {background && (
-                        <Route
-                            path={`/ingredients/:id`}
-                            children={
-                                <Modal
-                                    children={<IngredientDetails />}
-
-                                />
-                            }
-                        ></Route>
-                    )}
-                    {background && (
-                        <Route
-                            path={`${background.pathname}/:id`}
-                            children={
-                                <Modal
-
-                                    children={<OrderDetails />}
-                                />
-                            }
-                        />
-                    )}
-
                 </>
             )}
+            {background && (
+                <Route
+                    path={`/ingredients/:id`}
+                    children={
+                        <Modal
+
+                            children={<IngredientDetails />}
+
+                        />
+                    }
+                ></Route>
+            )}
+            {background && (
+                <Route
+                    path={`${background.pathname}/:id`}
+                    children={
+                        <Modal
+
+                            children={<OrderDetails />}
+                        />
+                    }
+                />
+            )}
+
+
+
         </>
     );
 }

@@ -13,35 +13,35 @@ import { Link, useLocation } from "react-router-dom";
 
 const Cards: FunctionComponent<{ type: string }> = ({ type }) => {
     const location = useLocation();
-    const info = useSelector((state) => state.apiList.burgerData);
-    if (info)
-        return (
-            <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
-                ' ml-4 mt-6 mr-2 mb-10'}>
-                {info.map((elem: TIngredient, i: number) => {
+    const info: any = useSelector((state) => state.apiList.burgerData);
+    return (
+        <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
+            ' ml-4 mt-6 mr-2 mb-10'}>
+            {info?.map((elem: TIngredient, i: number) => {
 
-                    if (elem.type === type) {
-                        return (
-                            <Link
-                                to={{
-                                    pathname: `/ingredients/${elem._id}`,
-                                    state: { background: location },
-                                }}
-                                key={elem._id} className={burgerIngredientsCategoryStyles.link}>
+                if (elem.type === type) {
+                    return (
 
-                                <BurgerIngredientsCard
-                                    index={i}
-                                    elem={elem}
-                                    key={elem._id}
+                        <Link
+                            to={{
+                                pathname: `/ingredients/${elem._id}`,
+                                state: { background: location },
+                            }}
+                            key={elem._id} className={burgerIngredientsCategoryStyles.link}>
 
-                                />
-                            </Link>
-                        );
-                    }
-                })}
-            </ul>
-        );
-    else return null
+                            <BurgerIngredientsCard
+                                index={i}
+                                elem={elem}
+                                key={elem._id}></BurgerIngredientsCard>
+
+
+                        </Link>
+                    );
+                }
+            })}
+        </ul>
+    );
+
 }
 /************************************************************* */
 

@@ -307,7 +307,7 @@ export function switchCard(dragIndex: number, hoverIndex: number, ingredients: A
     newIngredients.splice(hoverIndex, 0, dragIngredient);
     return function (dispatch: Dispatch<TIndexActions>) {
         dispatch({
-            type: "CONSTRUCTOR_CARD_CHANGE",
+            type: CONSTRUCTOR_CARD_CHANGE,
             value: newIngredients,
         });
     };
