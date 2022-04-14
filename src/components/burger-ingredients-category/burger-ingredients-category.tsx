@@ -5,32 +5,43 @@ import { FunctionComponent } from "react";
 import { useSelector } from '../../services/hooks';
 //import { useSelector } from "react-redux";
 import { TIngredient } from '../../services/types/types';
-import { RootState } from '../../services/reducers/index';
+import { Link, useLocation } from "react-router-dom";
+//import { RootState } from '../../services/reducers/index';
 
 
 /************************************************************* */
 
-//function Cards({ type }) {
 const Cards: FunctionComponent<{ type: string }> = ({ type }) => {
-    const info = useSelector((state) => state.apiList.burgerData);
-    if (info)
-        return (
-            <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
-                ' ml-4 mt-6 mr-2 mb-10'}>
-                {info.map((elem: TIngredient, i: number) => {
+    const location = useLocation();
+    const info: any = useSelector((state) => state.apiList.burgerData);
+    return (
+        <ul className={burgerIngredientsCategoryStyles.burger_ingredients_list +
+            ' ml-4 mt-6 mr-2 mb-10'}>
+            {info?.map((elem: TIngredient, i: number) => {
 
-                    if (elem.type === type) {
-                        return (
+                if (elem.type === type) {
+                    return (
+
+                        <Link
+                            to={{
+                                pathname: `/ingredients/${elem._id}`,
+                                state: { background: location },
+                            }}
+                            key={elem._id} className={burgerIngredientsCategoryStyles.link}>
+
                             <BurgerIngredientsCard
                                 index={i}
                                 elem={elem}
-                                key={elem._id} />
-                        );
-                    }
-                })}
-            </ul>
-        );
-    else return null
+                                key={elem._id}></BurgerIngredientsCard>
+
+
+                        </Link>
+                    );
+                }
+            })}
+        </ul>
+    );
+
 }
 /************************************************************* */
 

@@ -1,0 +1,41 @@
+.mainbox {
+    display: flex;
+    margin-top: 20vh;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    margin-left: 200px;
+}
+
+.noactivelink {
+    height: 64px;
+    color: #8585AD;
+    text-decoration: none;
+}
+
+.activelink {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navButton {
+    height: 64px;
+    padding: 0;
+    background: none !important;
+    border: none;
+    color: #8585AD;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 80px;
+    align-self: flex-start;
+}
+
+.detailedorder {
+    margin-left: 200px;
+}
+
+.text {
+    opacity: 0.4;
+}

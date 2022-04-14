@@ -9,7 +9,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/hooks';
 import { switchTab } from "../../services/actions";
 import { useRef, useEffect } from "react";
-import { RootState } from '../../services/reducers/index';
+//import { RootState } from '../../services/reducers/index';
 
 
 function MainTab() {
@@ -72,6 +72,21 @@ export default function BurgerIngredients() {
         }
 
     };
+
+    useEffect(() => {
+        if (scrollRef && scrollRef.current) {
+            scrollRef.current.addEventListener("scroll", (e: any) => {
+                ingredientsScroll(e);
+            });
+        }
+        return () => {
+            if (scrollRef && scrollRef.current) {
+                scrollRef.current.removeEventListener("scroll", (e: any) => {
+                    ingredientsScroll(e);
+                });
+            }
+        };
+    }, []);
 
     return (
         <>

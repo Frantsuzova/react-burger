@@ -65,3 +65,33 @@ export interface newObj {
     _id?: string,
     price?: string,
 }
+
+export type TUser = {
+    email: string;
+    name: string;
+    password: string;
+}
+
+export type TUserInfo = {
+    logged: boolean;
+    user: TUser
+
+}
+export interface Ires {
+    status?: string | number,
+    data: {
+        accessToken: string,
+        refreshToken: string,
+    }
+}
+
+export interface IUserInfo {
+    userInfo: {
+        user: {
+            name: string,
+            email: string,
+        }
+    }
+
+}
+

@@ -12,7 +12,6 @@ import {
 
 //
 import { useEffect, useRef } from "react";
-//import { useDispatch, useSelector } from "react-redux";
 import { useDispatch, useSelector } from '../../services/hooks';
 import {
     openModalOrder,
@@ -21,17 +20,17 @@ import {
     deleteCard,
     countPrice,
     addCard,
+    cleanCounter,
 } from "../../services/actions/index";
 import { itemTypes } from "../../services/actions/index";
-import { RootState } from '../../services/reducers/index';
 import { TIngredient } from '../../services/types/types';
+import { useHistory } from "react-router-dom";
 
 function Ingredients() {
     const mainIngredients = useSelector(
         (state) => state.constructorList.mainIngredients
     );
-    /***************************опять проблема с ключом*********************************************** */
-
+    /*******любимое место с ключом */
     const setIngr = mainIngredients.map((elem: TIngredient, i: number) => (<Ingredient
         key={elem.keyAdd}
         className={burgerConstructorStyles.burger_constructor__draggable_list}
@@ -126,6 +125,8 @@ const Ingredient: FunctionComponent<{ className: any, id: string, name: string, 
 }
 
 export default function BurgerConstructor() {
+    const history = useHistory();
+    const { logged } = useSelector(state => state.userInfo);
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
@@ -140,7 +141,7 @@ export default function BurgerConstructor() {
         },
     });
 
-    //const total = useSelector((state: RootState) => state.apiList.burgerData)
+    const total = useSelector((state) => state.apiList.burgerData)
 
     useEffect(() => {
         if (bun)
@@ -149,10 +150,8 @@ export default function BurgerConstructor() {
     }, [mainIngredients, bun]);
 
     const totalPrice = useSelector((state) => state.price.totalPrice);
-    //let infoToSend = null
     let infoToSend: null | Array<string> = null
     if (bun) {
-        //console.log(bun);
         bun.type ? infoToSend = mainIngredients
             .map((elem: { _id: string }) => elem._id)
             .concat(bun._id, bun._id) : infoToSend = null
@@ -238,7 +237,12 @@ export default function BurgerConstructor() {
                     <Button
                         type="primary"
                         size="medium"
-                        onClick={() => dispatch(openModalOrder(infoToSend))}>
+                        onClick={() => {
+                            if (logged) {
+                                dispatch(openModalOrder(infoToSend), cleanCounter(total))
+                            }
+                            else history.replace({ pathname: '/login' })
+                        }}>
                         Оформить заказ
                     </Button>}
             </div>

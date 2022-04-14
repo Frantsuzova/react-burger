@@ -34,6 +34,7 @@ const BurgerIngredientsCard: FunctionComponent<{ index: number, elem: IIngredien
         >
             {/*подсчет сколько взято*/}
             {elem.counter > 0 && <Counter count={elem.counter} size="default" />}
+
             {/*визуалка*/}
             <img src={elem.image} alt={elem.name} title={elem.name} className="ml-4 mr-4" />
             {/*цена*/}

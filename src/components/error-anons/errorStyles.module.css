@@ -1,0 +1,10 @@
+.box{
+    display: grid;
+    margin-top: -20px;
+    margin-bottom: 5px;
+}
+
+.text{
+    color: #FF6347;
+    display: block;
+}
