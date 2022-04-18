@@ -2,7 +2,6 @@ import { TIngredient, TOrderSend, TModalData, Ielem, IElemInconstructor, IIngred
 import { Dispatch } from 'redux';
 import { instance } from "./axios";
 import { v4 as uuidv4 } from 'uuid';
-
 export const GET_INGREDIENTS_API_REQUEST: 'GET_INGREDIENTS_API_REQUEST' = "GET_INGREDIENTS_API_REQUEST";
 export const GET_INGREDIENTS_API_SUCCESS: 'GET_INGREDIENTS_API_SUCCESS' = "GET_INGREDIENTS_API_SUCCESS";
 export const GET_INGREDIENTS_API_FAILED: 'GET_INGREDIENTS_API_FAILED' = "GET_INGREDIENTS_API_FAILED";
@@ -526,6 +525,108 @@ export function countCostOrder(all: any, ingredients: Array<object>) {
     return result;
 }
 
+
+export function countDate(createdAt: string) {
+    function daysInMonth(month: number, year: number) {
+        return new Date(year, month, 0).getDate();
+    }
+
+    const date = new Date(createdAt);
+    const today = Number(new Date().getDate().toString());
+    const previosMonth: number = Number(new Date().getMonth().toString());
+
+    const presentYear: number = Number(new Date().getFullYear().toString());
+
+    const countedMonth = daysInMonth(previosMonth, presentYear);
+
+    const options: object = {
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short",
+    };
+
+    const formatted = date
+        .toLocaleDateString("ru-RU", options)
+        .toString()
+        .replace(/[,.]/g, "")
+        .split(" ");
+    const newDate = formatted.slice();
+    formatted.map((elem, i, arr: any) => {
+        let minusDay = today - arr[0];
+        const orderDay = Number(arr[0]);
+        if (minusDay <= 0) {
+            minusDay = Number(countedMonth) - Number(orderDay) + 1;
+        }
+        if (orderDay === today) {
+            newDate.splice(0, 1, "Сегодня,");
+        }
+        if (orderDay === today - 1) {
+            newDate.splice(0, 1, "Вчера,");
+        }
+        if (orderDay > today && orderDay !== today - 1) {
+            newDate.splice(
+                0,
+                1,
+                minusDay === 1
+                    ? "Вчера,"
+                    : `${minusDay} ${minusDay <= 4 ? "дня" : "дней"} назад`
+            );
+        }
+        if (orderDay < today && orderDay !== today - 1) {
+            newDate.splice(
+                0,
+                1,
+                minusDay === 1
+                    ? "Вчера,"
+                    : `${minusDay} ${minusDay <= 4 ? "дня" : "дней"} назад`
+            );
+        }
+        newDate.splice(2, 1, `i-${arr[2]}`);
+    });
+    return newDate;
+}
+
+export function currentOrder(elem: { number: number, name: string, status: string, ingredients: Array<object>, createdAt: string }) {
+    return function (dispatch: Dispatch<TIndexActions>) {
+        dispatch({
+            type: WRITE_CURRENT_ORDER_DETAIL,
+            number: elem.number,
+            name: elem.name,
+            status: elem.status,
+            ingredients: elem.ingredients,
+            date: elem.createdAt,
+        });
+        dispatch({
+            type: MODAL_ORDER_DETAIL_OPEN,
+            open: true,
+        });
+    };
+}
+
+export function getOrder(url: string) {
+    return async function (dispatch: Dispatch<TIndexActions>) {
+        try {
+            const res = await instance.get(url);
+            dispatch({
+                type: GET_INFO_ONE_ORDER_REQUEST,
+            });
+            if (res.status === 200) {
+                const { data } = res;
+                //
+                dispatch({
+                    type: GET_INFO_ONE_ORDER_SUCCESS,
+                    value: data,
+                });
+            }
+        } catch (error: any) {
+            dispatch({
+                type: GET_INFO_ONE_ORDER_ERROR,
+                value: error,
+            });
+        }
+    };
+}
 
 export type TindexActions = {
 

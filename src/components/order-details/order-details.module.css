@@ -1,4 +1,5 @@
 .order__container {
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,3 +19,126 @@
 .order__loading {
     padding: 50px;
 }
+
+
+
+.orderIcon {
+    max-width: 120px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.orderImage {
+    display: grid;
+    background:
+        linear-gradient(rgb(0, 0, 0, 1), rgba(0, 0, 0, 1)) padding-box,
+        linear-gradient(to right, #801AB2, #4C4CFF) border-box;
+    border: 2px solid transparent;
+    border-radius: 100px;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+}
+
+.orderImage img {
+    transform: scale(0.7) translate(-39px, 4px);
+    object-fit: none;
+    max-width: 112px;
+    max-height: 56px;
+    display: block;
+
+}
+
+/*****/
+.doneStatus {
+    color: rgba(0, 204, 204, 1);
+}
+
+/*****/
+.ingredientScroll {
+    max-height: 200px;
+    overflow-y: scroll;
+    display: grid;
+}
+
+.ingredientScroll::-webkit-scrollbar {
+    width: calc(var(--offset-base-size) * 2);
+}
+
+.ingredientScroll::-webkit-scrollbar-track {
+    box-shadow: 8px 8px 8px -8px rgba(221, 114, 248, 0.2) inset;
+    border-radius: 10px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.ingredientScroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(133, 133, 173, 1);
+}
+
+.ingredientScroll::-webkit-scrollbar-thumb:hover {
+    /*попытка сделать интерфейс понятнее на отклике*/
+    background-color: #fff;
+    border: 1px solid rgb(85, 85, 85);
+}
+
+/*****/
+/*****/
+.orderDetailModal {
+    max-width: 640px;
+    max-height: 620px;
+    margin: auto;
+
+}
+
+/*****/
+.scrollInside {
+    max-width: 608px;
+    display: flex;
+    justify-content: space-between;
+
+
+}
+
+/*****/
+/*****/
+.detailOrderInfoHeader {
+    margin-top: 10vh;
+    text-align: center !important;
+}
+
+/*****/
+
+.mainOrderDetailInfo span {
+
+    text-align: start;
+    display: block;
+}
+
+/*****/
+.imageAndNameOrder {
+    display: flex;
+    align-items: center;
+
+}
+
+/*****/
+.priceOrderInfo {
+    display: flex;
+}
+
+/****/
+/*****/
+.orderInfoTotal {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*****/
+.orderInfoTotalCost {
+    display: flex;
+}
+
+/*****/

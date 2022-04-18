@@ -6,14 +6,18 @@ import { NavLink } from "react-router-dom";
 import {
     profileChange,
     logOut,
+    refreshToken
 } from "../services/actions/auth";
+import { getCookie } from "../services/actions/auth";
 import { useHistory } from "react-router-dom";
 import { Button, PasswordInput, Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import ErrorAnons from "../components/error-anons/error-anons";
 import { useRouteMatch, useLocation, Route } from "react-router-dom";
 import OrderDetails from "../components/order-details/order-details";
+import OrderCards from "../components/order-cards/order-cards";
 import { IUserInfo } from '../services/types/types'
 import { Location } from 'history/index'
+import SmallSpiner from "../components/spiner/spiner";
 
 type TPath = {
     pathname: string
@@ -32,6 +36,8 @@ function Profile() {
 function ProfileMain() {
 
     const location = useLocation<{ background: TPath }>();
+    const isLoading = useSelector((state) => state.webSocketAll.isLoading);
+    const data = useSelector((state) => state.webSocketAll.data);
     const { userInfo }: IUserInfo = useSelector(
         (state) => state.userInfo
     );
@@ -55,32 +61,33 @@ function ProfileMain() {
     return (
         <div className={profileStyles.mainbox}>
             <div className={profileStyles.navigation}>
+                <div className={profileStyles.navDiv}>
 
-                <NavLink
-                    exact
-                    to={{ pathname: `/profile` }}
-                    className={profileStyles.noactivelink}
-                    activeClassName={profileStyles.activelink}
-                >
-                    <span className="text text_type_main-medium">Профиль</span>
-                </NavLink>
-                <NavLink
-                    to={{ pathname: `/profile/orders` }}
-                    className={profileStyles.noactivelink}
-                    activeClassName={profileStyles.activelink}
-                >
-                    <span className="text text_type_main-medium">История заказов</span>
-                </NavLink>
-                <button
-                    className={profileStyles.navButton}
-                    onClick={() => dispatch(logOut(history))}
-                >
-                    <span className="text text_type_main-medium" >Выход</span>
-                </button>
-                <span className={profileStyles.text}>
-                    <Promt>{location.pathname === '/profile' ? profileText : orderListText}</Promt>
-                </span>
-
+                    <NavLink
+                        exact
+                        to={{ pathname: `/profile` }}
+                        className={profileStyles.noactivelink}
+                        activeClassName={profileStyles.activelink}
+                    >
+                        <span className="text text_type_main-medium">Профиль</span>
+                    </NavLink>
+                    <NavLink
+                        to={{ pathname: `/profile/orders` }}
+                        className={profileStyles.noactivelink}
+                        activeClassName={profileStyles.activelink}
+                    >
+                        <span className="text text_type_main-medium">История заказов</span>
+                    </NavLink>
+                    <button
+                        className={profileStyles.navButton}
+                        onClick={() => dispatch(logOut(history))}
+                    >
+                        <span className="text text_type_main-medium" >Выход</span>
+                    </button>
+                    <span className={profileStyles.text}>
+                        <Promt>{location.pathname === '/profile' ? profileText : orderListText}</Promt>
+                    </span>
+                </div>
             </div>
 
             <div className={profileStyles.detailedorder}>
@@ -88,6 +95,7 @@ function ProfileMain() {
                 <Route
                     exact
                     path={`/profile/orders`}
+                    component={!isLoading && data ? OrderHistory : SmallSpiner}
                 />
             </div>
         </div>
@@ -177,6 +185,39 @@ function ProfileInfo() {
     );
 }
 
+function OrderHistory() {
+    const dispatch = useDispatch()
+    const { data } = useSelector((state) => state.webSocketAll);
+    const token = getCookie("accessToken")
+
+    useEffect(() => {
+        if (data)
+            if (data.message) {
+                if (data.message === 'Invalid or missing token') {
+                    refreshToken()
+                }
+            }
+    }, [data, dispatch, token])
+
+    useEffect(() => {
+        if (data)
+            if (data.message === 'Invalid or missing token')
+                dispatch({
+                    type: "WS_CONNECTION_START",
+                    value: `wss://norma.nomoreparties.space/orders?token=${getCookie(
+                        "accessToken"
+                    )}`,
+                    place: true,
+                });
+    }, [token])
+    if (data)
+        return (
+            <div className={profileStyles.orderHistoryBox}>
+                {data.orders && !data.message && (<OrderCards />)}
+            </div>
+        );
+    else return null
+}
 
 
 const Promt: FunctionComponent<{ children: string }> = ({ children }) => {

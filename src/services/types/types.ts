@@ -95,3 +95,18 @@ export interface IUserInfo {
 
 }
 
+export type TWebsocketData = {
+    orders: Array<TOrder>;
+    total: number;
+    totalToday: number;
+    message: string;
+}
+
+export interface newInfo {
+    count?: number,
+    type?: string,
+    image_mobile?: string,
+    name?: string,
+    _id?: string,
+    price?: string,
+}

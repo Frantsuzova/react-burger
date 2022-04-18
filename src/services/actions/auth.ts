@@ -3,55 +3,46 @@ import { Dispatch } from 'redux'
 import { History } from 'history';
 import { TUserInfo, Ires } from '../types/types'
 
-export const USER_SIGN_UP_REQUEST = "USER_SIGN_UP_REQUEST";
-export const USER_SIGN_UP_SUCCESS = "USER_SIGN_UP_SUCCESS";
-export const USER_SIGN_UP_FAILED = "USER_SIGN_UP_FAILED";
+export const USER_SIGN_UP_REQUEST: 'USER_SIGN_UP_REQUEST' = "USER_SIGN_UP_REQUEST";
+export const USER_SIGN_UP_SUCCESS: 'USER_SIGN_UP_SUCCESS' = "USER_SIGN_UP_SUCCESS";
+export const USER_SIGN_UP_FAILED: 'USER_SIGN_UP_FAILED' = "USER_SIGN_UP_FAILED";
 
-export const USER_LOG_IN_REQUEST = "USER_LOG_IN_REQUEST";
-export const USER_LOG_IN_SUCCESS = "USER_LOG_IN_SUCCESS";
-export const USER_LOG_IN_FAILED = "USER_LOG_IN_FAILED";
+export const USER_LOG_IN_REQUEST: 'USER_LOG_IN_REQUEST' = "USER_LOG_IN_REQUEST";
+export const USER_LOG_IN_SUCCESS: 'USER_LOG_IN_SUCCESS' = "USER_LOG_IN_SUCCESS";
+export const USER_LOG_IN_FAILED: 'USER_LOG_IN_FAILED' = "USER_LOG_IN_FAILED";
 
-export const USER_LOG_OUT_REQUEST = "USER_LOG_OUT_REQUEST";
-export const USER_LOG_OUT_SUCCESS = "USER_LOG_OUT_SUCCESS";
-export const USER_LOG_OUT_FAILED = "USER_LOG_OUT_FAILED";
+export const USER_LOG_OUT_REQUEST: 'USER_LOG_OUT_REQUEST' = "USER_LOG_OUT_REQUEST";
+export const USER_LOG_OUT_SUCCESS: 'USER_LOG_OUT_SUCCESS' = "USER_LOG_OUT_SUCCESS";
+export const USER_LOG_OUT_FAILED: 'USER_LOG_OUT_FAILED' = "USER_LOG_OUT_FAILED";
 
-export const USER_FORGOT_REQUEST = "USER_FORGOT_REQUEST";
-export const USER_FORGOT_SUCCESS = "USER_FORGOT_SUCCESS";
-export const USER_FORGOT_FAILED = "USER_FORGOT_FAILED";
+export const USER_FORGOT_REQUEST: 'USER_FORGOT_REQUEST' = "USER_FORGOT_REQUEST";
+export const USER_FORGOT_SUCCESS: 'USER_FORGOT_SUCCESS' = "USER_FORGOT_SUCCESS";
+export const USER_FORGOT_FAILED: 'USER_FORGOT_FAILED' = "USER_FORGOT_FAILED";
 
-export const USER_RESET_REQUEST = "USER_RESET_REQUEST";
-export const USER_RESET_SUCCESS = "USER_RESET_SUCCESS";
-export const USER_RESET_FAILED = "USER_RESET_FAILED";
+export const USER_RESET_REQUEST: 'USER_RESET_REQUEST' = "USER_RESET_REQUEST";
+export const USER_RESET_SUCCESS: 'USER_RESET_SUCCESS' = "USER_RESET_SUCCESS";
+export const USER_RESET_FAILED: 'USER_RESET_FAILED' = "USER_RESET_FAILED";
 
-export const INPUT_NAME_VALUE = "INPUT_NAME_VALUE";
-export const INPUT_EMAIL_VALUE = "INPUT_EMAIL_VALUE";
-export const INPUT_PASSWORD_VALUE = "INPUT_PASSWORD_VALUE";
-export const INPUT_LETTER_CODE_VALUE = "INPUT_LETTER_CODE_VALUE";
-export const INPUT_CLEAN_VALUE = "INPUT_CLEAN_VALUE";
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = "GET_USER_REQUEST";
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = "GET_USER_SUCCESS";
+export const GET_USER_FAILED: 'GET_USER_FAILED' = "GET_USER_FAILED";
 
-export const GET_USER_REQUEST = "GET_USER_REQUEST";
-export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
-export const GET_USER_FAILED = "GET_USER_FAILED";
+export const USER_NEED_TO_REFRESH: 'USER_NEED_TO_REFRESH' = "USER_NEED_TO_REFRESH";
 
-export const USER_NEED_TO_REFRESH = "USER_NEED_TO_REFRESH";
+export const PROFILE_IS_READY: 'PROFILE_IS_READY' = "PROFILE_IS_READY";
 
-export const PROFILE_IS_READY = "PROFILE_IS_READY";
+export const GET_USER_REFRESH_REQUEST: 'GET_USER_REFRESH_REQUEST' = "GET_USER_REFRESH_REQUEST";
+export const GET_USER_REFRESH_SUCCESS: 'GET_USER_REFRESH_SUCCESS' = "GET_USER_REFRESH_SUCCESS";
+export const GET_USER_REFRESH_FAILED: 'GET_USER_REFRESH_FAILED' = "GET_USER_REFRESH_FAILED";
 
-export const GET_USER_REFRESH_REQUEST = "GET_USER_REFRESH_REQUEST";
-export const GET_USER_REFRESH_SUCCESS = "GET_USER_REFRESH_SUCCESS";
-export const GET_USER_REFRESH_FAILED = "GET_USER_REFRESH_FAILED";
+export const USER_PROFILE_CHANGE_REQUEST: 'USER_PROFILE_CHANGE_REQUEST' = "USER_PROFILE_CHANGE_REQUEST";
+export const USER_PROFILE_CHANGE_SUCCESS: 'USER_PROFILE_CHANGE_SUCCESS' = "USER_PROFILE_CHANGE_SUCCESS";
+export const USER_PROFILE_CHANGE_FAILED: 'USER_PROFILE_CHANGE_FAILED' = "USER_PROFILE_CHANGE_FAILED";
 
-export const USER_PROFILE_CHANGE_REQUEST = "USER_PROFILE_CHANGE_REQUEST";
-export const USER_PROFILE_CHANGE_SUCCESS = "USER_PROFILE_CHANGE_SUCCESS";
-export const USER_PROFILE_CHANGE_FAILED = "USER_PROFILE_CHANGE_FAILED";
-
-export const PROFILE_SELECTED = "PROFILE_SELECTED";
-
-export const CLEAR_ERROR_PROFILE = "CLEAR_ERROR_PROFILE";
-export const CLEAR_ERROR_FOGOT = "CLEAR_ERROR_FOGOT";
+export const CLEAR_ERROR_PROFILE: 'CLEAR_ERROR_PROFILE' = "CLEAR_ERROR_PROFILE";
 export const CLEAR_ERROR_FORGOT: 'CLEAR_ERROR_FORGOT' = "CLEAR_ERROR_FORGOT";
 
-export const CLEAR_ERROR_REGISTRATION = "CLEAR_ERROR_REGISTRATION";
+export const CLEAR_ERROR_REGISTRATION: 'CLEAR_ERROR_REGISTRATION' = "CLEAR_ERROR_REGISTRATION";
 
 export interface IUserSignUpRequest {
     readonly type: typeof USER_SIGN_UP_REQUEST;
@@ -220,6 +211,7 @@ export type TAuthActions =
     | IUserSignUpSuccess
     | IUserSignUpRequest;
 
+
 export function userRegistration(email: string, name: string, password: string, history: History | any) {
     return async function (dispatch: Dispatch<TAuthActions>) {
         try {
@@ -287,6 +279,10 @@ export function userLogin(email: string, password: string) {
             });
         }
     };
+}
+type TprofileChange = {
+    status: number;
+    data: object;
 }
 
 export function sendForgotRequest(info: any, history: History | any) {
@@ -545,6 +541,7 @@ export function profileChange(email: string, password: string, name: string) {
     };
 }
 
+
 export function resetPassword(password: string, token: string, history: History | any) {
     const url = " https://norma.nomoreparties.space/api/password-reset/reset";
     return function (dispatch: any) {
@@ -592,27 +589,15 @@ export function resetPassword(password: string, token: string, history: History 
 }
 
 export function clearNoLogIn() {
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch<TAuthActions>): void {
         dispatch({
             type: CLEAR_ERROR_PROFILE,
         });
         dispatch({
-            type: CLEAR_ERROR_FOGOT,
+            type: CLEAR_ERROR_FORGOT,
         });
         dispatch({
             type: CLEAR_ERROR_REGISTRATION,
-        });
-        dispatch({
-            type: INPUT_PASSWORD_VALUE,
-            value: "",
-        });
-        dispatch({
-            type: INPUT_NAME_VALUE,
-            value: "",
-        });
-        dispatch({
-            type: INPUT_EMAIL_VALUE,
-            value: "",
         });
     };
 }
@@ -668,6 +653,8 @@ export function changeProfileInfo(email: string, password: string, name: string)
     };
 }
 
+
+/*
 export function loggedInInput(userInfo: any) {
     return function (dispatch: any) {
         dispatch({
@@ -688,7 +675,7 @@ export function loggedInInput(userInfo: any) {
         });
     };
 }
-
+*/
 export async function refreshToken() {
     return instance
         .post("auth/token", {

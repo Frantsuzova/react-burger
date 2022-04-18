@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { TIndexActions } from '../actions/index';
 import { TIngredient, TModalData, TOrderSend } from '../types/types';
+import { webSocketAll } from "./webSocket";
 import {
     GET_INGREDIENTS_API_REQUEST,
     GET_INGREDIENTS_API_SUCCESS,
@@ -407,7 +408,6 @@ export const totalPrice = (state = initialPrice, action: TIndexActions): Tinitia
         }
     }
 };
-
 export const rootReducer = combineReducers({
     apiList: ingredientsApiList,
     constructorList: ingredientsConstructorList,
@@ -419,5 +419,6 @@ export const rootReducer = combineReducers({
     registration: userRegistrationInfo,
     userInfo: userInfo,
     forgotRequest: forgotRequest,
+    webSocketAll: webSocketAll,
     currentOrderDetail: currentOrderDetail,
 });

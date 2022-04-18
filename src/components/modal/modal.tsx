@@ -9,7 +9,7 @@ import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
 
 const modalRoot = document.getElementById("modal-root")!;
 
-const Modal: FunctionComponent<{ children: React.ReactNode }> = ({ children }) => {
+const Modal: FunctionComponent<{ children: React.ReactNode, header?: React.ReactNode }> = ({ children, header }) => {
     const location = useLocation<{ background: { pathname: string } }>()
     const { url } = useRouteMatch();
     const history = useHistory();
@@ -44,7 +44,7 @@ const Modal: FunctionComponent<{ children: React.ReactNode }> = ({ children }) =
             <ModalOverlay closeClick={() => closePopup()} />
 
             <div className={styles.modal__space}>
-
+                {header}
                 <div className={styles.modal__close_icon} onClick={() => closePopup()}>
                 </div>
                 <div className={styles.modalBody}>

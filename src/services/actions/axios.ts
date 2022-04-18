@@ -29,3 +29,17 @@ instance.interceptors.request.use(
     },
     (error: any) => Promise.reject(error)
 );
+
+instance.interceptors.response.use(
+    (response: any) => response,
+    async (error: { config: object, response: { data: { message: string } } }) => {
+        const origReqest = error.config;
+        if (error.response.data.message === "jwt expired") {
+            const result = await refreshToken();
+            instance.defaults.headers.common["Authorization"] =
+                "Bearer" + getCookie("accessToken");
+            return instance(origReqest);
+        }
+        Promise.reject(error);
+    }
+);

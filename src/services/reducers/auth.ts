@@ -31,7 +31,6 @@ import {
     CLEAR_ERROR_REGISTRATION,
 } from "../actions/auth";
 import { TAuthActions } from '../actions/auth'
-
 type TinitialRegistation = {
     hasError: boolean;
     error: null | string | number;
