@@ -321,6 +321,7 @@ export function deleteCard(mainIngredients: Array<TIngredient>, elemKey: TIngred
         });
 
         if (filtered.length === 0) {
+            console.log('totalCard.burgerData', totalCard.burgerData)
             totalCard.burgerData.filter((elem: { type: string, counter: number }) => {
                 if (elem.type !== 'bun') {
                     elem.counter = 0
@@ -376,11 +377,17 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
     let newElem: any = {};
     if (elem.item)
         return function (dispatch: Dispatch<TIndexActions>) {
+
             if (elem.item.type === "bun" && elem.item !== bun) {
-                elem.item.keyAdd = uuidv4();
                 elem.item.counter = 2;
-                if (bun)
+                console.log('1', bun)
+                if (bun && bun?.counter !== 0) {
+                    console.log('2', bun)
+                    elem.item.counter--;
                     bun.counter = 0;
+
+                }
+                elem.item.counter = 2;
                 dispatch({
                     type: CONSTRUCTOR_BUN,
                     bun: elem.item,
@@ -389,11 +396,13 @@ export function addCard(elem: any, mainIngredients: Array<TIngredient>, bun: TIn
             if (elem.item.type !== "bun" && !mainIngredients.includes(elem.item)) {
                 newMainIngredients.push(elem.item);
                 elem.item.keyAdd = uuidv4();
+
             }
             if (elem.item.type !== "bun" && mainIngredients.includes(elem.item)) {
                 Object.assign(newElem, elem.item);
                 newMainIngredients.push(newElem);
                 newElem.keyAdd = uuidv4();
+
             }
             dispatch({
                 type: CONSTRUCTOR_MAIN_INGREDIENTS,

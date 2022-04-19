@@ -19,7 +19,7 @@ function OrderCards() {
     const { url } = useRouteMatch();
 
     const orders = useSelector(
-        (state: any) => state.webSocketAll.data?.orders
+        (state) => state.webSocketAll.data?.orders
     );
     if (orders)
         return (
@@ -96,40 +96,26 @@ const OrderCard: FunctionComponent<{ elem: any }> = ({ elem }) => {
 
                         <div className={OrderCardStyles.orderDetail}>
                             <div className={OrderCardStyles.ingredients}>
-
                                 {right!.map((elem, i) => {
                                     let key = `${elem._id}${i}${number}`;
-
                                     if (i <= 4) {
                                         return (
-                                            <div
-                                                className={OrderCardStyles.image}
-                                                key={`${elem._id}${i}${number}`}
-                                            >
+                                            <div className={OrderCardStyles.image} key={key}>
                                                 <img src={elem.image_mobile} alt={elem.name} />
-
                                             </div>
                                         );
                                     }
 
                                     if (i === 5) {
                                         return (
-                                            <div className={OrderCardStyles.lastImagespace}>
-                                                <div
-                                                    className={
-                                                        OrderCardStyles.lastImage
-                                                    }
-                                                    key={`${elem._id}${i}${number}`}
-                                                >
-
+                                            <div className={OrderCardStyles.lastImagespace} key={key}>
+                                                <div className={OrderCardStyles.lastImage}>
                                                     <img src={elem.image_mobile} alt={elem.name} />
-
                                                 </div>
-                                                <div
-                                                    className={
-                                                        OrderCardStyles.plus
-                                                    }
-                                                ><span className={"text text_type_digits-default"}>{`+${hiddenIconsCount}`}</span></div>
+                                                <div className={OrderCardStyles.plus}>
+                                                    <span className={"text text_type_digits-default"}>{`+${hiddenIconsCount}`}
+                                                    </span>
+                                                </div>
                                             </div>
                                         );
                                     }

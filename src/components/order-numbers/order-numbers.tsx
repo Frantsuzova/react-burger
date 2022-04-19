@@ -4,11 +4,11 @@ import OrderNumbersStyles from "./OrderNumbersStyles.module.css";
 
 
 function OrderNumbers() {
-    const orders = useSelector((state: any) => state.webSocketAll.data?.orders)
+    const orders = useSelector((state) => state.webSocketAll.data?.orders)
     const totalToday = useSelector(
-        (state: any) => state.webSocketAll.data?.totalToday)
+        (state) => state.webSocketAll.data?.totalToday)
     const total = useSelector(
-        (state: any) => state.webSocketAll.data?.total
+        (state) => state.webSocketAll.data?.total
     );
 
     let doneOrders

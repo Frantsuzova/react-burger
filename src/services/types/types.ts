@@ -110,3 +110,13 @@ export interface newInfo {
     _id?: string,
     price?: string,
 }
+
+export type TWsActions = {
+    wsInit: string,
+    onOpen: string,
+    onMessage: string,
+    onClose: string,
+    onSend: string,
+    onError: string,
+    ordersInit: string
+};

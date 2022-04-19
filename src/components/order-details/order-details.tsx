@@ -149,21 +149,24 @@ const Ingredients: FunctionComponent<{ total: Array<newObj> | null }> = ({ total
         <div className={styles.ingredientScroll}>
             {noDuplicate.map((elem, i) => {
                 return (
-                    <div
-                        className={styles.scrollInside + "mb-4"}
-                        key={`${elem._id}${i}`}
-                    >
-                        <div className={styles.imageAndNameOrder}>
-                            <div className={styles.orderImage}>
-                                <img src={elem.image_mobile} alt={elem.name} />
+                    <div className={styles.infoEat} key={`${elem._id}${i}`}>
+                        <div
+                            className={styles.scrollInside + "mb-4"}
+
+                        >
+                            {/* */}
+                            <div className={styles.imageAndNameOrder}>
+                                <div className={styles.orderImage}>
+                                    <img src={elem.image_mobile} alt={elem.name} />
+                                </div>
+                                <span
+                                    className={
+                                        "text text_type_main-default m-4"
+                                    }
+                                >
+                                    {elem.name}
+                                </span>
                             </div>
-                            <span
-                                className={
-                                    "text text_type_main-default m-4"
-                                }
-                            >
-                                {elem.name}
-                            </span>
                         </div>
                         <div className={styles.priceOrderInfo}>
                             <span

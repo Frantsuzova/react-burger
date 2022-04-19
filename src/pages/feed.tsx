@@ -8,7 +8,7 @@ import OrderNumbers from "../components/order-numbers/order-numbers";
 import { WS_CONNECTION_START, WS_CONNECTION_TO_CLOSE } from '../services/actions/webSocket'
 function Feed() {
     const dispatch = useDispatch();
-    const data = useSelector((state: any) => state.webSocketAll.data);
+    const data = useSelector((state) => state.webSocketAll.data);
     useEffect(() => {
         dispatch({
             type: WS_CONNECTION_START,
