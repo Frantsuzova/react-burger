@@ -360,7 +360,7 @@ export function getCookie(name: string) {
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-
+/*
 export function getUserRequest() {
     const url = "https://norma.nomoreparties.space/api/auth/user";
     return async function (dispatch: any) {
@@ -418,6 +418,41 @@ export function getUserRequest() {
                 });
             }
         })();
+    };
+}
+*/
+export function getUserRequest() {
+    return async function (dispatch: Dispatch<TAuthActions>) {
+        try {
+            dispatch({
+                type: GET_USER_REQUEST,
+            });
+            const res = await instance.get("auth/user");
+            if (res.status === 200) {
+                const { data } = res;
+                dispatch({
+                    type: GET_USER_SUCCESS,
+                    value: data,
+                });
+                dispatch({
+                    type: PROFILE_IS_READY,
+                    value: true,
+                });
+            }
+            if (res.status !== 200) {
+                throw new Error(res.status);
+            }
+        } catch (error: any) {
+            dispatch({
+                type: PROFILE_IS_READY,
+                value: false,
+            });
+            dispatch({
+                type: GET_USER_FAILED,
+                errorMessage: error,
+                error: error,
+            });
+        }
     };
 }
 

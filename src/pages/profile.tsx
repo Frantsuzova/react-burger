@@ -17,7 +17,7 @@ import OrderDetails from "../components/order-details/order-details";
 import OrderCards from "../components/order-cards/order-cards";
 import { IUserInfo } from '../services/types/types'
 import { Location } from 'history/index'
-import SmallSpiner from "../components/spiner/spiner";
+import Spiner from "../components/spiner/spiner";
 
 type TPath = {
     pathname: string
@@ -51,6 +51,20 @@ function ProfileMain() {
         e.preventDefault();
         dispatch(profileChange(emailValue, passwordValue, nameValue));
     };
+    useEffect(() => {
+        dispatch({
+            type: 'WS_CONNECTION_START',
+            value: `wss://norma.nomoreparties.space/orders?token=${getCookie(
+                'accessToken',
+            )}`,
+            place: true,
+        });
+        return () => {
+            dispatch({
+                type: 'WS_CONNECTION_TO_CLOSE',
+            });
+        };
+    }, []);
 
     const profileText =
         "В этом разделе вы можете изменить свои персональные данные";
@@ -95,7 +109,7 @@ function ProfileMain() {
                 <Route
                     exact
                     path={`/profile/orders`}
-                    component={!isLoading && data ? OrderHistory : SmallSpiner}
+                    component={!isLoading && data ? OrderHistory : Spiner}
                 />
             </div>
         </div>
@@ -187,37 +201,43 @@ function ProfileInfo() {
 
 function OrderHistory() {
     const dispatch = useDispatch()
-    const { data } = useSelector((state) => state.webSocketAll);
+    // const { data } = useSelector((state) => state.webSocketAll);
+    const data = useSelector((state) => state.webSocketAll.data);
     const token = getCookie("accessToken")
-
-    useEffect(() => {
-        if (data)
-            if (data.message) {
-                if (data.message === 'Invalid or missing token') {
-                    refreshToken()
+    /*
+            useEffect(() => {
+            if (data)
+                if (data.message) {
+                    if (data.message === 'Invalid or missing token') {
+                        refreshToken()
+                    }
                 }
-            }
-    }, [data, dispatch, token])
+        }, [data, dispatch, token])
+    */
+    /*
+        useEffect(() => {
+            if (data)
+                if (data.message === 'Invalid or missing token')
+                    dispatch({
+                        type: "WS_CONNECTION_START",
+                        value: `wss://norma.nomoreparties.space/orders?token=${getCookie(
+                            "accessToken"
+                        )}`,
+                        place: true,
+                    });
+        }, [token])
+        */
 
-    useEffect(() => {
-        if (data)
-            if (data.message === 'Invalid or missing token')
-                dispatch({
-                    type: "WS_CONNECTION_START",
-                    value: `wss://norma.nomoreparties.space/orders?token=${getCookie(
-                        "accessToken"
-                    )}`,
-                    place: true,
-                });
-    }, [token])
     if (data)
         return (
             <div className={profileStyles.orderHistoryBox}>
+
                 {data.orders && !data.message && (<OrderCards />)}
             </div>
         );
     else return null
 }
+
 
 
 const Promt: FunctionComponent<{ children: string }> = ({ children }) => {
