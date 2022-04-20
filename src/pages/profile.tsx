@@ -26,10 +26,10 @@ type TPath = {
 function Profile() {
     const { path } = useRouteMatch();
     return (
-        <>
-            <Route path={`${path}/orders/:id`} component={OrderDetails} />
+        <div className={profileStyles.box}>
             <Route path={`${path}`} component={ProfileMain} />
-        </>
+            <Route path={`${path}/orders/:id`} component={OrderDetails} />
+        </div>
     );
 }
 

@@ -1,4 +1,5 @@
-import { getCookie, refreshToken } from './auth'
+import { getCookie, refreshToken } from './auth';
+import { dataUrl } from '../../utils/data';
 
 const axios = require("axios");
 interface IConfig {
@@ -8,7 +9,7 @@ interface IConfig {
 }
 
 export const instance = axios.create({
-    baseURL: "https://norma.nomoreparties.space/api/",
+    baseURL: dataUrl,
     headers: {
         "Content-Type": "application/json",
     },

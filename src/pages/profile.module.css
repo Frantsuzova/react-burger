@@ -1,7 +1,12 @@
 .mainbox {
     display: flex;
-    margin-top: 20vh;
+    /*margin-top: 20vh;*/
 
+}
+.box {
+    margin-top: 20vh;;
+    display: flex;
+    align-items: flex-start;
 }
 
 .navigation {
