@@ -8,8 +8,10 @@
 - получение и обновление пользовательской информации через сервер;
 - навигация по страницам через react router dom.
 
-# Основной стек: HTML, CSS, JavaScript, TypeScript, React.js, Redux.
+## Основной стек: 
+HTML, CSS, JavaScript, TypeScript, React.js, Redux.
 
 [gh-pages](https://frantsuzova.github.io/react-burger/)
 
-# Запуск у себя: npm i & npm start
+## Запуск у себя: 
+npm i & npm start
