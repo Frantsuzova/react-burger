@@ -11,6 +11,8 @@
 ## Основной стек: 
 HTML, CSS, JavaScript, TypeScript, React.js, Redux.
 
+## Поиграться можно здесь:
+
 [gh-pages](https://frantsuzova.github.io/react-burger/)
 
 ## Запуск у себя: 
