@@ -1,4 +1,6 @@
 .modal__space {
+    padding: 3px 0px 30px 0px;
+    /* сверху | справа | снизу | слева */
     position: fixed;
     background-color: rgba(28, 28, 33, 1);
     border-radius: 40px;
@@ -17,7 +19,7 @@
 }
 
 .modalBody {
-
+    padding: 15px;
     display: flex;
     flex-direction: column;
 }
@@ -25,7 +27,7 @@
 .modal__close_icon {
     background-image: url(../../images/close.svg);
     position: absolute;
-    top: 50px;
+    top: 20px;
     right: 43px;
     cursor: pointer;
     z-index: 1;

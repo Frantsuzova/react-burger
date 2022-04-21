@@ -26,11 +26,14 @@ import { itemTypes } from "../../services/actions/index";
 import { TIngredient } from '../../services/types/types';
 import { useHistory } from "react-router-dom";
 
+
+
 function Ingredients() {
     const mainIngredients = useSelector(
         (state) => state.constructorList.mainIngredients
     );
     /*******любимое место с ключом */
+
     const setIngr = mainIngredients.map((elem: TIngredient, i: number) => (<Ingredient
         key={elem.keyAdd}
         className={burgerConstructorStyles.burger_constructor__draggable_list}
@@ -41,6 +44,7 @@ function Ingredients() {
         image={elem.image_mobile}
         index={i}
     />))
+
     return (
         <>
             {setIngr}
@@ -48,16 +52,22 @@ function Ingredients() {
     );
 }
 
-
 const Ingredient: FunctionComponent<{ className: any, id: string, name: string, price: number, image: string, index: number, elemKey: TIngredient }> = ({ id, name, price, image, index, elemKey }) => {
     const dispatch = useDispatch();
     const totalCard = useSelector((state) => state.apiList);
     const { mainIngredients, bun } = useSelector(
         (state) => state.constructorList
     );
+
     useEffect(() => {
         dispatch(count(mainIngredients, elemKey, totalCard));
-    }, [mainIngredients, bun, deleteCard, switchCard]);
+    }, [mainIngredients, bun, addCard, count, elemKey]);
+    /*
+  useEffect(() => {
+      dispatch(count(mainIngredients, elemKey, totalCard));
+  }, [mainIngredients, bun, deleteCard, switchCard]);
+*/
+
     useEffect(() => {
     }, [totalCard, deleteCard]);
 
@@ -180,7 +190,7 @@ export default function BurgerConstructor() {
                 {!bun && mainIngredients.length === 0 &&
                     <div >
                         <p className={burgerConstructorStyles.burger_constructor__noingr_space + 'text text_type_main-medium'}>
-                            Перетащите сюда ингредиенты
+                            Сначала добавьте ингридиенты
                         </p>
                         <div className={burgerConstructorStyles.burger_constructor__noingr}></div>
                     </div>

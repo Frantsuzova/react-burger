@@ -1,12 +1,59 @@
 .mainbox {
     display: flex;
-    margin-top: 20vh;
+    /*margin-top: 20vh;*/
+
+}
+.box {
+    margin-top: 20vh;;
+    display: flex;
+    align-items: flex-start;
 }
 
 .navigation {
     display: flex;
     flex-direction: column;
-    margin-left: 200px;
+    justify-content: space-between;
+    text-align: start;
+    margin-left: 320px;
+    max-width: 320px;
+    padding-left: 10px;
+}
+
+.navDiv {
+
+    display: flex;
+    align-self: start;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.orderHistoryBox {
+    width: 844px;
+    max-height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 7px;
+}
+
+.orderHistoryBox::-webkit-scrollbar {
+    width: calc(var(--offset-base-size) * 2);
+}
+
+.orderHistoryBox::-webkit-scrollbar-track {
+    box-shadow: 8px 8px 8px -8px rgba(221, 114, 248, 0.2) inset;
+    border-radius: 10px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.orderHistoryBox::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(133, 133, 173, 1);
+}
+
+.orderHistoryBox::-webkit-scrollbar-thumb:hover {
+    /*попытка сделать интерфейс понятнее на отклике*/
+    background-color: #fff;
+    border: 1px solid rgb(85, 85, 85);
 }
 
 .noactivelink {
@@ -32,9 +79,13 @@
     align-self: flex-start;
 }
 
+/*
 .detailedorder {
-    margin-left: 200px;
+    background-color: aquamarine;
+    margin-right: auto;
+    margin-left: 60px;
 }
+*/
 
 .text {
     opacity: 0.4;

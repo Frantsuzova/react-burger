@@ -14,6 +14,8 @@ import ForgotPassword from "../../pages/forgotPassword";
 import ResetPassword from "../../pages/resetPassword";
 import Profile from "../../pages/profile";
 import NotFound from "../../pages/page404";
+import Feed from "../../pages/feed";
+import Spiner from "../spiner/spiner";
 /**************/
 import LoggedProtectedRoute from "../ProtectedRoute/LoggedProtectedRoute";
 import LoggedProtectedResetRoute from "../ProtectedRoute/LoggedProtectedResetRoute";
@@ -58,7 +60,9 @@ export default function App() {
         }
     }, []);
 
-
+    const currentOrderNumber = useSelector(
+        (state) => state.currentOrderDetail.number
+    );
 
 
     const background =
@@ -66,7 +70,7 @@ export default function App() {
 
     return (
         <>
-
+            {isLoading && <Spiner />}
             {hasError && "Ошибка" && <div>{error}</div>}
             {!isLoading && !hasError && burgerData && (
                 <>
@@ -75,7 +79,7 @@ export default function App() {
                     <Switch location={background || location}>
 
                         <Route exact path="/" component={MainPage} />
-
+                        <Route exact path="/feed" component={Feed} />
                         <LoggedProtectedRoute exact path="/login">
                             <Login />
                         </LoggedProtectedRoute>
@@ -103,33 +107,40 @@ export default function App() {
                             <NotFound />
                         </Route>
                     </Switch>
+
+
+                    {background && (
+                        <Route
+                            path={`/ingredients/:id`}
+                            children={
+                                <Modal
+
+                                    children={<IngredientDetails />}
+
+                                />
+                            }
+                        ></Route>
+                    )}
+
+                    {background && (
+
+                        <Route
+                            path={`${background.pathname}/:id`}
+                            children={
+                                <Modal
+                                    header={
+                                        <span className={"text text_type_digits-default  ml-10 mt-10 mb-10"}>
+                                            {`#${currentOrderNumber}`}
+                                        </span>
+                                    }
+                                    children={<OrderDetails />}
+                                />
+                            }
+                        />
+                    )}
+
                 </>
             )}
-            {background && (
-                <Route
-                    path={`/ingredients/:id`}
-                    children={
-                        <Modal
-
-                            children={<IngredientDetails />}
-
-                        />
-                    }
-                ></Route>
-            )}
-            {background && (
-                <Route
-                    path={`${background.pathname}/:id`}
-                    children={
-                        <Modal
-
-                            children={<OrderDetails />}
-                        />
-                    }
-                />
-            )}
-
-
 
         </>
     );

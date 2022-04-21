@@ -9,11 +9,19 @@ import { useDispatch } from '../../services/hooks';
 import { useDrag } from 'react-dnd';
 import { itemTypes } from "../../services/actions/index";
 import { currentIngredient } from "../../services/actions/index";
-
+import { useSelector } from '../../services/hooks';
 import { IIngredientElem } from '../../services/types/types';
 
 
 const BurgerIngredientsCard: FunctionComponent<{ index: number, elem: IIngredientElem }> = ({ index, elem }) => {
+    const info = useSelector((state) => state.constructorList);
+
+    const count = () => {
+        const allElements = info.bun
+            ? info.mainIngredients.concat(info.bun, info.bun)
+            : info.mainIngredients;
+        return allElements.filter((el: any) => el._id === elem._id).length;
+    };
     const dispatch = useDispatch();
     const [{ isDragging }, dragRef] = useDrag({
         type: itemTypes.ingredient,
@@ -33,7 +41,9 @@ const BurgerIngredientsCard: FunctionComponent<{ index: number, elem: IIngredien
             onClick={() => dispatch(currentIngredient(elem))}
         >
             {/*подсчет сколько взято*/}
-            {elem.counter > 0 && <Counter count={elem.counter} size="default" />}
+            {elem.counter > 0 && <Counter count={count()} size='default' />}
+
+            {/*elem.counter > 0 && <Counter count={elem.counter} size="default" />*/}
 
             {/*визуалка*/}
             <img src={elem.image} alt={elem.name} title={elem.name} className="ml-4 mr-4" />

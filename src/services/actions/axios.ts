@@ -1,4 +1,5 @@
-import { getCookie, refreshToken } from './auth'
+import { getCookie, refreshToken } from './auth';
+import { dataUrl } from '../../utils/data';
 
 const axios = require("axios");
 interface IConfig {
@@ -8,7 +9,7 @@ interface IConfig {
 }
 
 export const instance = axios.create({
-    baseURL: "https://norma.nomoreparties.space/api/",
+    baseURL: dataUrl,
     headers: {
         "Content-Type": "application/json",
     },
@@ -28,4 +29,18 @@ instance.interceptors.request.use(
         return config;
     },
     (error: any) => Promise.reject(error)
+);
+
+instance.interceptors.response.use(
+    (response: any) => response,
+    async (error: { config: object, response: { data: { message: string } } }) => {
+        const origReqest = error.config;
+        if (error.response.data.message === "jwt expired") {
+            const result = await refreshToken();
+            instance.defaults.headers.common["Authorization"] =
+                "Bearer" + getCookie("accessToken");
+            return instance(origReqest);
+        }
+        Promise.reject(error);
+    }
 );

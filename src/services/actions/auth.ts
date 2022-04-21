@@ -3,55 +3,46 @@ import { Dispatch } from 'redux'
 import { History } from 'history';
 import { TUserInfo, Ires } from '../types/types'
 
-export const USER_SIGN_UP_REQUEST = "USER_SIGN_UP_REQUEST";
-export const USER_SIGN_UP_SUCCESS = "USER_SIGN_UP_SUCCESS";
-export const USER_SIGN_UP_FAILED = "USER_SIGN_UP_FAILED";
+export const USER_SIGN_UP_REQUEST: 'USER_SIGN_UP_REQUEST' = "USER_SIGN_UP_REQUEST";
+export const USER_SIGN_UP_SUCCESS: 'USER_SIGN_UP_SUCCESS' = "USER_SIGN_UP_SUCCESS";
+export const USER_SIGN_UP_FAILED: 'USER_SIGN_UP_FAILED' = "USER_SIGN_UP_FAILED";
 
-export const USER_LOG_IN_REQUEST = "USER_LOG_IN_REQUEST";
-export const USER_LOG_IN_SUCCESS = "USER_LOG_IN_SUCCESS";
-export const USER_LOG_IN_FAILED = "USER_LOG_IN_FAILED";
+export const USER_LOG_IN_REQUEST: 'USER_LOG_IN_REQUEST' = "USER_LOG_IN_REQUEST";
+export const USER_LOG_IN_SUCCESS: 'USER_LOG_IN_SUCCESS' = "USER_LOG_IN_SUCCESS";
+export const USER_LOG_IN_FAILED: 'USER_LOG_IN_FAILED' = "USER_LOG_IN_FAILED";
 
-export const USER_LOG_OUT_REQUEST = "USER_LOG_OUT_REQUEST";
-export const USER_LOG_OUT_SUCCESS = "USER_LOG_OUT_SUCCESS";
-export const USER_LOG_OUT_FAILED = "USER_LOG_OUT_FAILED";
+export const USER_LOG_OUT_REQUEST: 'USER_LOG_OUT_REQUEST' = "USER_LOG_OUT_REQUEST";
+export const USER_LOG_OUT_SUCCESS: 'USER_LOG_OUT_SUCCESS' = "USER_LOG_OUT_SUCCESS";
+export const USER_LOG_OUT_FAILED: 'USER_LOG_OUT_FAILED' = "USER_LOG_OUT_FAILED";
 
-export const USER_FORGOT_REQUEST = "USER_FORGOT_REQUEST";
-export const USER_FORGOT_SUCCESS = "USER_FORGOT_SUCCESS";
-export const USER_FORGOT_FAILED = "USER_FORGOT_FAILED";
+export const USER_FORGOT_REQUEST: 'USER_FORGOT_REQUEST' = "USER_FORGOT_REQUEST";
+export const USER_FORGOT_SUCCESS: 'USER_FORGOT_SUCCESS' = "USER_FORGOT_SUCCESS";
+export const USER_FORGOT_FAILED: 'USER_FORGOT_FAILED' = "USER_FORGOT_FAILED";
 
-export const USER_RESET_REQUEST = "USER_RESET_REQUEST";
-export const USER_RESET_SUCCESS = "USER_RESET_SUCCESS";
-export const USER_RESET_FAILED = "USER_RESET_FAILED";
+export const USER_RESET_REQUEST: 'USER_RESET_REQUEST' = "USER_RESET_REQUEST";
+export const USER_RESET_SUCCESS: 'USER_RESET_SUCCESS' = "USER_RESET_SUCCESS";
+export const USER_RESET_FAILED: 'USER_RESET_FAILED' = "USER_RESET_FAILED";
 
-export const INPUT_NAME_VALUE = "INPUT_NAME_VALUE";
-export const INPUT_EMAIL_VALUE = "INPUT_EMAIL_VALUE";
-export const INPUT_PASSWORD_VALUE = "INPUT_PASSWORD_VALUE";
-export const INPUT_LETTER_CODE_VALUE = "INPUT_LETTER_CODE_VALUE";
-export const INPUT_CLEAN_VALUE = "INPUT_CLEAN_VALUE";
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = "GET_USER_REQUEST";
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = "GET_USER_SUCCESS";
+export const GET_USER_FAILED: 'GET_USER_FAILED' = "GET_USER_FAILED";
 
-export const GET_USER_REQUEST = "GET_USER_REQUEST";
-export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
-export const GET_USER_FAILED = "GET_USER_FAILED";
+export const USER_NEED_TO_REFRESH: 'USER_NEED_TO_REFRESH' = "USER_NEED_TO_REFRESH";
 
-export const USER_NEED_TO_REFRESH = "USER_NEED_TO_REFRESH";
+export const PROFILE_IS_READY: 'PROFILE_IS_READY' = "PROFILE_IS_READY";
 
-export const PROFILE_IS_READY = "PROFILE_IS_READY";
+export const GET_USER_REFRESH_REQUEST: 'GET_USER_REFRESH_REQUEST' = "GET_USER_REFRESH_REQUEST";
+export const GET_USER_REFRESH_SUCCESS: 'GET_USER_REFRESH_SUCCESS' = "GET_USER_REFRESH_SUCCESS";
+export const GET_USER_REFRESH_FAILED: 'GET_USER_REFRESH_FAILED' = "GET_USER_REFRESH_FAILED";
 
-export const GET_USER_REFRESH_REQUEST = "GET_USER_REFRESH_REQUEST";
-export const GET_USER_REFRESH_SUCCESS = "GET_USER_REFRESH_SUCCESS";
-export const GET_USER_REFRESH_FAILED = "GET_USER_REFRESH_FAILED";
+export const USER_PROFILE_CHANGE_REQUEST: 'USER_PROFILE_CHANGE_REQUEST' = "USER_PROFILE_CHANGE_REQUEST";
+export const USER_PROFILE_CHANGE_SUCCESS: 'USER_PROFILE_CHANGE_SUCCESS' = "USER_PROFILE_CHANGE_SUCCESS";
+export const USER_PROFILE_CHANGE_FAILED: 'USER_PROFILE_CHANGE_FAILED' = "USER_PROFILE_CHANGE_FAILED";
 
-export const USER_PROFILE_CHANGE_REQUEST = "USER_PROFILE_CHANGE_REQUEST";
-export const USER_PROFILE_CHANGE_SUCCESS = "USER_PROFILE_CHANGE_SUCCESS";
-export const USER_PROFILE_CHANGE_FAILED = "USER_PROFILE_CHANGE_FAILED";
-
-export const PROFILE_SELECTED = "PROFILE_SELECTED";
-
-export const CLEAR_ERROR_PROFILE = "CLEAR_ERROR_PROFILE";
-export const CLEAR_ERROR_FOGOT = "CLEAR_ERROR_FOGOT";
+export const CLEAR_ERROR_PROFILE: 'CLEAR_ERROR_PROFILE' = "CLEAR_ERROR_PROFILE";
 export const CLEAR_ERROR_FORGOT: 'CLEAR_ERROR_FORGOT' = "CLEAR_ERROR_FORGOT";
 
-export const CLEAR_ERROR_REGISTRATION = "CLEAR_ERROR_REGISTRATION";
+export const CLEAR_ERROR_REGISTRATION: 'CLEAR_ERROR_REGISTRATION' = "CLEAR_ERROR_REGISTRATION";
 
 export interface IUserSignUpRequest {
     readonly type: typeof USER_SIGN_UP_REQUEST;
@@ -220,6 +211,7 @@ export type TAuthActions =
     | IUserSignUpSuccess
     | IUserSignUpRequest;
 
+
 export function userRegistration(email: string, name: string, password: string, history: History | any) {
     return async function (dispatch: Dispatch<TAuthActions>) {
         try {
@@ -288,45 +280,39 @@ export function userLogin(email: string, password: string) {
         }
     };
 }
+type TprofileChange = {
+    status: number;
+    data: object;
+}
 
 export function sendForgotRequest(info: any, history: History | any) {
-    return function (dispatch: Dispatch<TAuthActions>) {
-        const requestOption = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
+    return async function (dispatch: Dispatch<TAuthActions>) {
+        try {
+            dispatch({
+                type: USER_FORGOT_REQUEST,
+            });
+            const res = await instance.post("password-reset", {
                 email: info,
-            }),
-        };
-
-        const url = "https://norma.nomoreparties.space/api/password-reset";
-        (async () => {
-            try {
+            });
+            if (res.status === 200) {
+                const { data } = res;
                 dispatch({
-                    type: USER_FORGOT_REQUEST,
-                });
-                const res = await fetch(url, requestOption);
-                if (res.ok) {
-                    const result = await res.json();
-                    const last = await result;
-                    dispatch({
-                        type: USER_FORGOT_SUCCESS,
-                        value: last,
-                    });
-                }
-                if (!res.ok) {
-                    dispatch({
-                        type: USER_FORGOT_FAILED,
-                        value: res.status,
-                    });
-                }
-            } catch (error: any) {
-                dispatch({
-                    type: USER_FORGOT_FAILED,
-                    value: error,
+                    type: USER_FORGOT_SUCCESS,
+                    value: data,
                 });
             }
-        })();
+            if (res.status !== 200) {
+                dispatch({
+                    type: USER_FORGOT_FAILED,
+                    value: res.status,
+                });
+            }
+        } catch (error: any) {
+            dispatch({
+                type: USER_FORGOT_FAILED,
+                value: error,
+            });
+        }
     };
 }
 
@@ -366,66 +352,42 @@ export function getCookie(name: string) {
 }
 
 export function getUserRequest() {
-    const url = "https://norma.nomoreparties.space/api/auth/user";
-    return async function (dispatch: any) {
-        const request = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + getCookie("accessToken"),
-            },
-        };
-
-        (async () => {
-            try {
+    return async function (dispatch: Dispatch<TAuthActions>) {
+        try {
+            dispatch({
+                type: GET_USER_REQUEST,
+            });
+            const res = await instance.get("auth/user");
+            if (res.status === 200) {
+                const { data } = res;
                 dispatch({
-                    type: GET_USER_REQUEST,
-                });
-
-                const res = await fetch(url, request);
-                const result = await res.json();
-                const last = await result;
-                if (res.ok) {
-                    dispatch({
-                        type: GET_USER_SUCCESS,
-                        value: last,
-                    });
-                    dispatch({
-                        type: USER_NEED_TO_REFRESH,
-                        value: false,
-                    });
-                    dispatch({
-                        type: PROFILE_IS_READY,
-                        value: true,
-                    });
-                }
-                if (!res.ok) {
-                    if (last.message === "jwt expired") {
-                        dispatch(
-                            getUserRefresh(getCookie("refreshToken"), getUserRequest()),
-                        );
-                    }
-                    throw new Error(last.message);
-                }
-            } catch (error: any) {
-                dispatch({
-                    type: USER_NEED_TO_REFRESH,
-                    value: true,
+                    type: GET_USER_SUCCESS,
+                    value: data,
                 });
                 dispatch({
                     type: PROFILE_IS_READY,
-                    value: false,
-                });
-                dispatch({
-                    type: GET_USER_FAILED,
-                    errorMessage: error.message,
+                    value: true,
                 });
             }
-        })();
+            if (res.status !== 200) {
+                throw new Error(res.status);
+            }
+        } catch (error: any) {
+            dispatch({
+                type: PROFILE_IS_READY,
+                value: false,
+            });
+            dispatch({
+                type: GET_USER_FAILED,
+                errorMessage: error,
+                error: error,
+            });
+        }
     };
 }
 
 export function getUserRefresh(token: any, sendDataAgain: any) {
+    /*
     const url = "https://norma.nomoreparties.space/api/auth/token";
     return async function (dispatch: any) {
         const requestOption = {
@@ -472,6 +434,22 @@ export function getUserRefresh(token: any, sendDataAgain: any) {
             }
         })();
     };
+    */
+    return instance
+        .post("auth/token", {
+            token: getCookie("refreshToken"),
+        })
+        .then((res: Ires) => {
+
+            if (res.status === 200) {
+                const { data } = res;
+                document.cookie = `accessToken=${data.accessToken.split("Bearer ")[1]
+                    }; path=/`;
+                document.cookie = `refreshToken=${data.refreshToken}; path=/`
+            } else {
+                return res.data;
+            }
+        });
 }
 
 export function logOut(history: History | any) {
@@ -545,149 +523,91 @@ export function profileChange(email: string, password: string, name: string) {
     };
 }
 
+
 export function resetPassword(password: string, token: string, history: History | any) {
-    const url = " https://norma.nomoreparties.space/api/password-reset/reset";
-    return function (dispatch: any) {
-        const requestOption = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+    return async function (dispatch: Dispatch<TAuthActions>) {
+        try {
+            dispatch({
+                type: USER_RESET_REQUEST,
+            });
+            const res = await instance.post("password-reset/reset", {
                 password: password,
                 token: token,
-            }),
-        };
-        (async () => {
-            try {
+            });
+            if (res.status === 200) {
+                const { data } = res;
                 dispatch({
-                    type: USER_RESET_REQUEST,
+                    type: USER_RESET_SUCCESS,
+                    value: data,
                 });
-                const res = await fetch(url, requestOption);
-                if (res.ok) {
-                    const result = await res.json();
-                    const last = await result;
-                    dispatch({
-                        type: USER_RESET_SUCCESS,
-                        value: last,
-                    });
-                    history.replace({ pathname: "/" });
-                }
-
-                if (!res.ok) {
-                    dispatch({
-                        type: USER_RESET_FAILED,
-                        error: res.status,
-                    });
-                }
-
-            } catch (error: any) {
+                history.replace({ pathname: "/" });
+            }
+            if (res.status !== 200) {
                 dispatch({
                     type: USER_RESET_FAILED,
-                    value: error.status,
+                    error: res.status,
                 });
             }
-        })();
+        } catch (error: any) {
+            dispatch({
+                type: USER_RESET_FAILED,
+                error: error.status,
+            });
+        }
     };
 }
 
 export function clearNoLogIn() {
-    return function (dispatch: any) {
+    return function (dispatch: Dispatch<TAuthActions>): void {
         dispatch({
             type: CLEAR_ERROR_PROFILE,
         });
         dispatch({
-            type: CLEAR_ERROR_FOGOT,
+            type: CLEAR_ERROR_FORGOT,
         });
         dispatch({
             type: CLEAR_ERROR_REGISTRATION,
-        });
-        dispatch({
-            type: INPUT_PASSWORD_VALUE,
-            value: "",
-        });
-        dispatch({
-            type: INPUT_NAME_VALUE,
-            value: "",
-        });
-        dispatch({
-            type: INPUT_EMAIL_VALUE,
-            value: "",
         });
     };
 }
 
 export function changeProfileInfo(email: string, password: string, name: string) {
-    const url = "https://norma.nomoreparties.space/api/auth/user";
-    return async function (dispatch: any) {
-        const requestOption = {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: "Bearer " + getCookie("accessToken"),
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                name: name,
-            }),
-        };
+    return async function (dispatch: Dispatch<TAuthActions>) {
         try {
             dispatch({
                 type: USER_PROFILE_CHANGE_REQUEST,
             });
-            const res = await fetch(url, requestOption);
-            const result = await res.json();
-            const last = await result;
-            if (res.ok) {
+            const res: any = await instance.patch("auth/user", {
+                email: email,
+                password: password,
+                name: name,
+            })
+            dispatch({
+                type: USER_PROFILE_CHANGE_REQUEST,
+            });
+            if (res.status === 200) {
                 dispatch({
                     type: USER_PROFILE_CHANGE_SUCCESS,
-                    value: last,
+                    value: res.data,
                 });
             }
-            if (!res.ok) {
-                if (last.message === "jwt expired") {
-                    dispatch(
-                        getUserRefresh(
-                            getCookie("refreshToken"),
-                            changeProfileInfo(email, password, name)
-                        )
-                    );
-                }
-                throw new Error(last.message);
+            if (res.status !== 200) {
+                dispatch({
+                    type: USER_PROFILE_CHANGE_FAILED,
+                    error: res.status,
+                    errorMessage: res.status
+                });
             }
-            return last;
         } catch (error: any) {
             dispatch({
                 type: USER_PROFILE_CHANGE_FAILED,
-                value: error.message,
-                error: error.message,
+                error: error,
+                errorMessage: error,
             });
-            return error;
         }
     };
 }
 
-export function loggedInInput(userInfo: any) {
-    return function (dispatch: any) {
-        dispatch({
-            type: INPUT_NAME_VALUE,
-            value: userInfo.user.name,
-        });
-        dispatch({
-            type: INPUT_EMAIL_VALUE,
-            value: userInfo.user.email,
-        });
-        dispatch({
-            type: INPUT_PASSWORD_VALUE,
-            value: "",
-        });
-        dispatch({
-            type: USER_NEED_TO_REFRESH,
-            value: false,
-        });
-    };
-}
 
 export async function refreshToken() {
     return instance

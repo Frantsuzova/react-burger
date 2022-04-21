@@ -1,0 +1,141 @@
+.mainBox {
+    background-color: #1C1C21;
+    border-radius: 30px;
+    max-width: 844px !important;
+
+}
+
+span {
+    display: block;
+}
+
+.price {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.done {
+    color: rgba(0, 204, 204, 1);
+}
+
+.itemConteiner {
+
+    background-color: #1C1C21;
+    border-radius: 40px;
+    width: 100%;
+
+
+}
+
+.mainConteiner {
+    width: 100%;
+
+    /* max-width: 584px !important;*/
+}
+
+.mainInfoLine {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.mainInfo {
+    display: flex;
+    text-decoration: none;
+
+}
+
+.link {
+
+    color: #fff;
+    text-decoration: none;
+}
+
+.content {
+    padding-top: 24px;
+    padding-bottom: 16px;
+
+}
+
+.orderDetail {
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.image {
+
+    background:
+        linear-gradient(rgb(0, 0, 0, 1), rgba(0, 0, 0, 1)) padding-box,
+        linear-gradient(to right, #801AB2, #4C4CFF) border-box;
+    border: 2px solid transparent;
+    border-radius: 100px;
+    width: 64px;
+    height: 64px;
+    z-index: 1;
+
+}
+
+.image img {
+    transform: scale(0.8) translate(-29px, 7px);
+    object-fit: none;
+    max-width: 112px;
+    max-height: 64px;
+    display: block;
+
+}
+
+.lastImage {
+    background:
+        linear-gradient(rgb(0, 0, 0, 1), rgba(0, 0, 0, 1)) padding-box,
+        linear-gradient(to right, #801AB2, #4C4CFF) border-box;
+    border: 2px solid transparent;
+    border-radius: 100px;
+    width: 64px;
+    height: 64px;
+    opacity: 50%;
+    margin-left: -10px;
+}
+
+.lastImagespace {
+    display: flex;
+    align-items: center;
+    margin-left: -10px;
+
+}
+
+.plus {
+    z-index: 1;
+    margin-left: -48px;
+
+
+}
+
+.lastImage img {
+    margin-top: -5px;
+    width: 70px;
+    height: 70px;
+}
+
+.image:nth-child(2) {
+    margin-left: -10px;
+}
+
+.image:nth-child(3) {
+    margin-left: -10px;
+}
+
+.image:nth-child(4) {
+    margin-left: -10px;
+}
+
+.image:nth-child(5) {
+    margin-left: -10px;
+}

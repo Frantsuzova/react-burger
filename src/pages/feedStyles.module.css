@@ -1,0 +1,56 @@
+.feed {
+
+    max-height: 78vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-width: 608px;
+    text-decoration: none;
+    padding: 7px;
+
+
+}
+
+.headerText {
+    text-align: start;
+    max-width: 608px;
+    text-decoration: none;
+}
+
+.feedList {
+
+    margin: 0 auto;
+    text-decoration: none;
+    max-width: 608px;
+}
+
+.feed::-webkit-scrollbar {
+    width: calc(var(--offset-base-size) * 2);
+}
+
+.feed::-webkit-scrollbar-track {
+    box-shadow: 8px 8px 8px -8px rgba(221, 114, 248, 0.2) inset;
+    border-radius: 10px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.feed::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(133, 133, 173, 1);
+}
+
+.feed::-webkit-scrollbar-thumb:hover {
+    /*попытка сделать интерфейс понятнее на отклике*/
+    background-color: #fff;
+    border: 1px solid rgb(85, 85, 85);
+}
+
+.content {
+    display: flex;
+    margin: 0 auto;
+}
+
+.mainBox {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
